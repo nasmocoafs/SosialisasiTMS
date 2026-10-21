@@ -57,9 +57,127 @@
       background: #CBD5E1;
       border-radius: 9999px;
     }
+    @keyframes pulse-border {
+      0%, 100% { border-color: rgba(238, 29, 35, 0.4); }
+      50% { border-color: rgba(238, 29, 35, 1); }
+    }
+    .qr-frame {
+      animation: pulse-border 2.5s infinite;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col font-sans antialiased">
+
+  <!-- TAMPILAN BRIDGING / QR PORTAL GATEWAY -->
+  <div id="bridgingScreen" class="fixed inset-0 z-50 bg-slate-950 text-white flex flex-col justify-between p-6 sm:p-10 overflow-y-auto">
+    <!-- Top Branding Bar -->
+    <div class="max-w-6xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-2xl bg-red-600 text-white flex items-center justify-center font-extrabold text-2xl shadow-lg shadow-red-600/30">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-extrabold uppercase tracking-widest text-red-500">AFTERSALES DEPARTMENT • MARKETING DIVISION</span>
+          </div>
+          <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">TOYOTA MOBILE SERVICE (TMS) — NASMOCO GROUP</h1>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3.5 py-1.5 rounded-full text-emerald-400 text-xs font-bold">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span>Live System Connected</span>
+      </div>
+    </div>
+
+    <!-- Center Content: Split Presentation & QR Card -->
+    <div class="max-w-6xl w-full mx-auto my-auto py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      
+      <!-- Left Column: Welcome & Instructions -->
+      <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-600/20 border border-red-500/30 text-red-300 text-xs font-bold uppercase tracking-wider">
+          <i class="fa-solid fa-satellite-dish"></i> Portal Sosialisasi, Trial & BAST Hardware
+        </div>
+
+        <h2 class="text-3xl sm:text-5xl font-extrabold leading-tight tracking-tight text-white">
+          Selamat Datang Peserta Sosialisasi <span class="text-red-500">TMS Nasmoco</span>
+        </h2>
+
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0">
+          Silakan pindai (<em>scan</em>) <strong>QR Code</strong> di samping menggunakan perangkat <strong>Tablet Operasional TMS</strong> atau Smartphone Anda untuk mengisi <strong>Daftar Hadir & Berita Acara Serah Terima (BAST)</strong> unit Toyota Hilux Rangga.
+        </p>
+
+        <!-- Step Indicators -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2 text-left">
+          <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl">
+            <div class="w-8 h-8 rounded-lg bg-red-600/20 text-red-400 font-extrabold text-sm flex items-center justify-center mb-2">01</div>
+            <p class="text-xs font-bold text-white">Scan QR / Buka Link</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Akses portal melalui browser di Tablet TMS yang baru dibagikan.</p>
+          </div>
+          <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl">
+            <div class="w-8 h-8 rounded-lg bg-red-600/20 text-red-400 font-extrabold text-sm flex items-center justify-center mb-2">02</div>
+            <p class="text-xs font-bold text-white">Pilih Cabang & TA</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Data No. Rangka & Mesin Hilux Rangga akan terisi otomatis.</p>
+          </div>
+          <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl">
+            <div class="w-8 h-8 rounded-lg bg-red-600/20 text-red-400 font-extrabold text-sm flex items-center justify-center mb-2">03</div>
+            <p class="text-xs font-bold text-white">Cek Kit & TTD Digital</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Verifikasi Tablet, Stylus, Charger, & GSM lalu kirim BAST.</p>
+          </div>
+        </div>
+
+        <!-- Direct Action Button (if opened directly on tablet) -->
+        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+          <button onclick="closeBridgingScreen()" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-extrabold text-sm shadow-xl shadow-red-600/30 flex items-center justify-center gap-3 transition cursor-pointer">
+            <span>Buka Formulir Registrasi Sekarang</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <a href="https://wa.me/6282133488787?text=0" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-5 py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-emerald-400 font-bold text-xs flex items-center justify-center gap-2 transition">
+            <i class="fa-brands fa-whatsapp text-base"></i>
+            <span>Helpdesk ITCare: +62 821-3348-8787 (Ketik 0)</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Large QR Code Card -->
+      <div class="lg:col-span-5 flex justify-center">
+        <div class="bg-white text-slate-900 rounded-3xl p-6 sm:p-8 shadow-2xl max-w-sm w-full text-center border-4 border-red-600 qr-frame relative">
+          <div class="inline-flex items-center gap-1.5 bg-red-50 text-red-600 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider mb-3 border border-red-100">
+            <i class="fa-solid fa-qrcode"></i> Scan untuk Akses Aplikasi
+          </div>
+
+          <h3 class="text-base font-extrabold text-slate-800 mb-4">PORTAL REGISTRASI & BAST TMS</h3>
+
+          <!-- QR Code Image with Fallback -->
+          <div class="bg-slate-50 p-4 rounded-2xl border-2 border-dashed border-slate-200 inline-block mb-4">
+            <img 
+              src="https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=8&data=https%3A%2F%2Fnasmocoafs.github.io%2FSosialisasiTMS%2F" 
+              alt="QR Code Sosialisasi TMS Nasmoco" 
+              class="w-56 h-56 sm:w-64 sm:h-64 mx-auto rounded-lg object-contain"
+              onerror="this.onerror=null; this.src='https://placehold.co/320x320/ffffff/0f172a?text=nasmocoafs.github.io/SosialisasiTMS';"
+            >
+          </div>
+
+          <!-- Link Box & Copy Button -->
+          <div class="bg-slate-100 p-3 rounded-xl border border-slate-200 mb-4">
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Tautan Langsung (URL):</p>
+            <p class="font-mono font-bold text-xs text-red-600 break-all select-all">https://nasmocoafs.github.io/SosialisasiTMS/</p>
+          </div>
+
+          <button onclick="copyPortalLink()" id="btnCopyPortalLink" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition">
+            <i class="fa-regular fa-copy"></i>
+            <span>Salin Link Portal</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="max-w-6xl w-full mx-auto border-t border-slate-800/80 pt-4 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+      <span>PT New Ratna Motor (Nasmoco Group) • Standarisasi Armada Toyota Hilux Rangga</span>
+      <span>23 Armada Operasional Terdaftar</span>
+    </div>
+  </div>
 
   <!-- Top Header -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
@@ -77,14 +195,14 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-2 self-end sm:self-auto">
-        <button id="btnOpenScriptModal" class="px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-800 hover:bg-slate-900 text-white flex items-center gap-1.5 transition shadow-sm">
-          <i class="fa-solid fa-code"></i>
-          <span>Setup Script</span>
-        </button>
-        <button id="btnOpenConfig" class="px-3 py-1.5 text-xs font-bold rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 flex items-center gap-1.5 transition">
-          <i class="fa-solid fa-table"></i>
-          <span id="configStatusLabel">Koneksi Spreadsheet</span>
+      <div class="flex items-center gap-2.5 self-end sm:self-auto">
+        <div class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Auto-Sync Cloud Aktif</span>
+        </div>
+        <button onclick="openBridgingScreen()" class="px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-900 hover:bg-slate-800 text-white flex items-center gap-2 transition shadow-sm cursor-pointer">
+          <i class="fa-solid fa-qrcode text-red-400"></i>
+          <span>Tampilkan Layar QR</span>
         </button>
       </div>
     </div>
@@ -92,27 +210,14 @@
 
   <!-- Main Content -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-    <!-- Status Connection Notice -->
-    <div id="connectionBanner" class="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-sm">
-      <div class="flex items-start gap-3">
-        <i class="fa-solid fa-circle-exclamation text-amber-600 text-lg mt-0.5"></i>
-        <div>
-          <span class="font-semibold text-amber-900">Mode Simulasi Mandiri / Siap GitHub Pages</span>
-          <p class="text-xs text-amber-700 mt-0.5">Untuk auto-sync real-time tanpa delay ke Google Sheet, masukkan URL Web App pada tombol <strong>"Koneksi Spreadsheet"</strong> atau tanam langsung di variabel <code>DEFAULT_WEBHOOK_URL</code> sebelum upload ke GitHub.</p>
-        </div>
-      </div>
-      <button onclick="document.getElementById('btnOpenConfig').click()" class="text-xs font-bold text-amber-900 bg-amber-200 hover:bg-amber-300 px-3 py-1.5 rounded-lg whitespace-nowrap transition">
-        Hubungkan Sheet Sekarang
-      </button>
-    </div>
 
     <!-- Navigation Tabs -->
     <div class="flex border-b border-slate-200 mb-6 bg-white rounded-t-xl px-4 pt-2">
-      <button id="tabFormBtn" onclick="switchTab('form')" class="tab-active pb-3 px-4 text-sm flex items-center gap-2">
+      <button id="tabFormBtn" onclick="switchTab('form')" class="tab-active pb-3 px-4 text-sm flex items-center gap-2 cursor-pointer">
         <i class="fa-solid fa-clipboard-user"></i>
         Form Registrasi & BAST
       </button>
-      <button id="tabListBtn" onclick="switchTab('list')" class="text-slate-500 pb-3 px-4 text-sm flex items-center gap-2 hover:text-slate-800 transition">
+      <button id="tabListBtn" onclick="switchTab('list')" class="text-slate-500 pb-3 px-4 text-sm flex items-center gap-2 hover:text-slate-800 transition cursor-pointer">
         <i class="fa-solid fa-table-list"></i>
         Daftar Kehadiran & Hardware (<span id="countBadge">0</span>/23)
       </button>
@@ -259,7 +364,7 @@
           <div class="pt-4 border-t border-slate-100">
             <div class="flex items-center justify-between mb-1.5">
               <label class="text-xs font-bold uppercase tracking-wider text-slate-600">Tanda Tangan Digital Penerima (BAST) *</label>
-              <button type="button" onclick="clearSignature()" class="text-xs font-semibold text-slate-400 hover:text-red-500 transition">
+              <button type="button" onclick="clearSignature()" class="text-xs font-semibold text-slate-400 hover:text-red-500 transition cursor-pointer">
                 <i class="fa-solid fa-rotate-left mr-1"></i>Ulangi Tanda Tangan
               </button>
             </div>
@@ -279,19 +384,36 @@
 
           <!-- Action Buttons -->
           <div class="pt-2 flex flex-col sm:flex-row gap-3">
-            <button type="submit" id="submitBtn" class="flex-1 bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-bold py-3 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 transition">
+            <button type="submit" id="submitBtn" class="flex-1 bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-bold py-3 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 transition cursor-pointer">
               <i class="fa-solid fa-paper-plane"></i>
               <span>Kirim Registrasi & BAST Instan</span>
             </button>
-            <button type="button" onclick="resetForm()" class="px-5 py-3 rounded-xl border border-slate-200 text-slate-600 font-semibold hover:bg-slate-100 text-sm transition">
+            <button type="button" onclick="resetForm()" class="px-5 py-3 rounded-xl border border-slate-200 text-slate-600 font-semibold hover:bg-slate-100 text-sm transition cursor-pointer">
               Reset
             </button>
           </div>
         </form>
       </div>
 
-      <!-- Right Column: Hardware Kit Info & ITCare Helpdesk -->
+      <!-- Right Column: Hardware Kit Info, QR Access & ITCare Helpdesk -->
       <div class="space-y-6">
+        <!-- Quick QR Card -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex items-center gap-4">
+          <img 
+            src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=4&data=https%3A%2F%2Fnasmocoafs.github.io%2FSosialisasiTMS%2F" 
+            alt="QR Code Sosialisasi TMS" 
+            class="w-20 h-20 rounded-xl border border-slate-200 p-1 shrink-0"
+          >
+          <div class="min-w-0 flex-1">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-red-600 block">Akses Cepat QR</span>
+            <h4 class="text-xs font-bold text-slate-800 truncate">nasmocoafs.github.io/SosialisasiTMS/</h4>
+            <p class="text-[11px] text-slate-500 mt-0.5 mb-2">Klik tombol di bawah untuk menampilkan QR layar penuh.</p>
+            <button onclick="openBridgingScreen()" class="text-[11px] font-bold text-white bg-slate-900 hover:bg-slate-800 px-3 py-1.5 rounded-lg inline-flex items-center gap-1.5 transition cursor-pointer">
+              <i class="fa-solid fa-expand"></i> Perbesar QR
+            </button>
+          </div>
+        </div>
+
         <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white shadow-md">
           <div class="inline-flex items-center gap-2 bg-red-600/30 text-red-300 text-xs px-3 py-1 rounded-full font-semibold mb-3 border border-red-500/30">
             <i class="fa-solid fa-boxes-stacked"></i> Paket BAST Hardware TMS
@@ -404,14 +526,14 @@
         <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-50/50">
           <div>
             <h3 class="font-bold text-slate-800 text-lg">Data Kehadiran & BAST Hardware Terdata</h3>
-            <p class="text-xs text-slate-500">Data tersimpan secara instan di lokal & otomatis terkirim ke Google Spreadsheet.</p>
+            <p class="text-xs text-slate-500">Data tersimpan secara instan & otomatis tersinkronisasi ke Google Spreadsheet Nasmoco.</p>
           </div>
           <div class="flex items-center gap-2 w-full sm:w-auto">
-            <button onclick="exportToCSV()" class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-1.5 transition shadow-sm">
+            <button onclick="exportToCSV()" class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-1.5 transition shadow-sm cursor-pointer">
               <i class="fa-solid fa-file-excel"></i>
               <span>Download Excel/CSV</span>
             </button>
-            <button onclick="openClearModal()" class="px-3 py-2 text-xs font-bold rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 transition" title="Hapus Riwayat Lokal">
+            <button onclick="openClearModal()" class="px-3 py-2 text-xs font-bold rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 transition cursor-pointer" title="Hapus Riwayat Lokal">
               <i class="fa-regular fa-trash-can"></i>
             </button>
           </div>
@@ -450,143 +572,6 @@
 
   </main>
 
-  <!-- MODAL: Google Apps Script Webhook URL Config -->
-  <div id="configModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
-          <i class="fa-solid fa-gear text-red-600"></i>
-          Pengaturan Koneksi Google Sheet
-        </h3>
-        <button onclick="closeModal('configModal')" class="text-slate-400 hover:text-slate-600">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <div class="space-y-4 text-xs">
-        <p class="text-slate-600 leading-relaxed">
-          Masukkan <strong>Web App URL</strong> dari Google Apps Script yang telah Anda Deploy di Google Spreadsheet Anda:
-        </p>
-        
-        <div>
-          <label class="block font-bold text-slate-700 uppercase mb-1">Google Apps Script Web App URL</label>
-          <input type="url" id="sheetWebhookUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none">
-        </div>
-
-        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-slate-500 space-y-1">
-          <p class="font-semibold text-slate-700"><i class="fa-solid fa-circle-info text-blue-500 mr-1"></i>Catatan:</p>
-          <p>Jika URL diisi, setiap kali TA klik simpan, formulir akan otomatis mengirim data via HTTP POST langsung ke baris baru Google Sheet Anda secara <em>real-time</em>.</p>
-        </div>
-
-        <div class="flex items-center justify-end gap-2 pt-2">
-          <button onclick="testWebhookConnection()" class="px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 font-semibold text-slate-700 transition">
-            Tes Koneksi
-          </button>
-          <button onclick="saveWebhookUrl()" class="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold transition shadow-sm">
-            Simpan URL
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: Google Apps Script Ready Code -->
-  <div id="scriptGuideModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-100 max-h-[90vh] flex flex-col">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
-        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
-          <i class="fa-solid fa-code text-emerald-600"></i>
-          Kode Google Apps Script (Siap Pakai)
-        </h3>
-        <button onclick="closeModal('scriptGuideModal')" class="text-slate-400 hover:text-slate-600">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <div class="overflow-y-auto custom-scrollbar flex-grow space-y-3 text-xs pr-1">
-        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-emerald-900">
-          <p class="font-bold mb-1">Langkah Mudah Menghubungkan:</p>
-          <ol class="list-decimal pl-4 space-y-1 text-emerald-800">
-            <li>Buka Google Spreadsheet baru di Google Drive Anda.</li>
-            <li>Klik menu <strong>Extensions (Ekstensi) &gt; Apps Script</strong>.</li>
-            <li>Hapus semua kode yang ada di Apps Script, lalu <em>paste</em> kode di bawah ini.</li>
-            <li>Klik <strong>Deploy &gt; New Deployment</strong>, pilih tipe <strong>Web App</strong>.</li>
-            <li>Ubah <em>"Who has access"</em> menjadi <strong>"Anyone"</strong> lalu Deploy.</li>
-            <li>Salin URL Web App yang dihasilkan ke tombol <strong>"Koneksi Spreadsheet"</strong> di formulir ini.</li>
-          </ol>
-        </div>
-
-        <div class="relative">
-          <button onclick="copyAppsScriptCode()" id="btnCopyCode" class="absolute top-2 right-2 bg-slate-700 hover:bg-slate-600 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg transition flex items-center gap-1">
-            <i class="fa-regular fa-copy"></i>
-            <span>Salin Kode</span>
-          </button>
-          <pre class="bg-slate-900 text-slate-100 p-4 rounded-xl font-mono text-[11px] overflow-x-auto leading-relaxed"><code id="gasCodeBlock">function doPost(e) {
-  var lock = LockService.getScriptLock();
-  lock.tryLock(10000);
-  
-  try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    
-    // Buat Header otomatis jika sheet masih kosong
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow([
-        "Timestamp",
-        "Cabang Nasmoco",
-        "Nama TA",
-        "NIK Karyawan",
-        "No. WA Pribadi",
-        "Model Kendaraan",
-        "No. Rangka (VIN)",
-        "Tipe Mesin",
-        "No. HP Kartu GSM TMS",
-        "S/N Tablet",
-        "Kelengkapan Kit (Tablet, Stylus, Charger, GSM)",
-        "Status Persetujuan BAST"
-      ]);
-      sheet.getRange(1, 1, 1, 12).setFontWeight("bold").setBackground("#EE1D23").setFontColor("#FFFFFF");
-    }
-    
-    var data = JSON.parse(e.postData.contents);
-    
-    sheet.appendRow([
-      data.timestamp || new Date(),
-      data.cabang,
-      data.nama,
-      data.nik,
-      data.noHpPribadi,
-      data.modelArmada,
-      data.noRangka,
-      data.tipeMesin,
-      data.noGsmTms,
-      data.snTablet || "-",
-      data.kitSummary,
-      data.agreement ? "Lengkap & Disetujui" : "Belum Lengkap"
-    ]);
-    
-    return ContentService
-      .createTextOutput(JSON.stringify({ "result": "success", "row": sheet.getLastRow() }))
-      .setMimeType(ContentService.MimeType.JSON);
-      
-  } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ "result": "error", "error": err.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
-  } finally {
-    lock.releaseLock();
-  }
-}</code></pre>
-        </div>
-      </div>
-
-      <div class="pt-3 border-t border-slate-100 flex justify-end">
-        <button onclick="closeModal('scriptGuideModal')" class="px-5 py-2 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
-          Tutup
-        </button>
-      </div>
-    </div>
-  </div>
-
   <!-- MODAL: Konfirmasi Hapus Data (Tanpa window.confirm) -->
   <div id="clearConfirmModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 text-center">
@@ -594,10 +579,10 @@
         <i class="fa-solid fa-triangle-exclamation text-xl"></i>
       </div>
       <h3 class="text-base font-bold text-slate-800 mb-1">Hapus Riwayat Browser?</h3>
-      <p class="text-xs text-slate-500 mb-5">Tindakan ini hanya membersihkan tampilan tabel lokal di browser ini (data di Google Sheet tetap aman).</p>
+      <p class="text-xs text-slate-500 mb-5">Tindakan ini hanya membersihkan tampilan tabel lokal di perangkat ini (data di Google Sheet tetap aman).</p>
       <div class="flex gap-2 justify-center">
-        <button onclick="closeModal('clearConfirmModal')" class="px-4 py-2 text-xs font-semibold rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50">Batal</button>
-        <button onclick="confirmClearAllData()" class="px-4 py-2 text-xs font-bold rounded-xl bg-rose-600 hover:bg-rose-700 text-white">Ya, Bersihkan</button>
+        <button onclick="closeModal('clearConfirmModal')" class="px-4 py-2 text-xs font-semibold rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 cursor-pointer">Batal</button>
+        <button onclick="confirmClearAllData()" class="px-4 py-2 text-xs font-bold rounded-xl bg-rose-600 hover:bg-rose-700 text-white cursor-pointer">Ya, Bersihkan</button>
       </div>
     </div>
   </div>
@@ -620,13 +605,12 @@
 
   <script>
     // ============================================================================
-    // KONFIGURASI DEFAULT WEBHOOK GOOGLE SHEETS UNTUK GITHUB PAGES
-    // Jika Anda sudah punya URL Web App Google Apps Script, tempel di antara tanda
-    // kutip di bawah ini agar semua user yang membuka link GitHub otomatis terhubung:
+    // HARDCODED WEBHOOK URL GOOGLE SHEETS & PORTAL GITHUB PAGES
     // ============================================================================
-    const DEFAULT_WEBHOOK_URL = ""; 
+    const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxJf3nK_snZzeq9N3btY1JVm873fL4fr9cYB2B5ZS1GL9iSVuTIH1-srktZe0oD0XWhzA/exec";
+    const PORTAL_URL = "https://nasmocoafs.github.io/SosialisasiTMS/";
 
-    // Master Data 21 Armada Toyota Hilux Rangga & TA Nasmoco Group
+    // Master Data 23 Armada Toyota Hilux Rangga & TA Nasmoco Group
     const MASTER_DATA_TMS = [
       { id: 1, cabang: "Nasmoco Pemuda", nama: "Alang Honggo Prayogo", noRangka: "MR3ACAEA2R0390040", mesin: "Diesel" },
       { id: 2, cabang: "Nasmoco Kaligawe", nama: "Andreas Widianto", noRangka: "MR3AWAAA6R1090038", mesin: "Gasoline" },
@@ -655,7 +639,6 @@
 
     // State Variables
     let registrations = [];
-    let webhookUrl = DEFAULT_WEBHOOK_URL;
 
     // Canvas Signature variables
     let canvas, ctx;
@@ -668,21 +651,43 @@
       loadStoredData();
       renderTable();
       updateBadge();
-
-      // Check stored Webhook URL or fallback to DEFAULT_WEBHOOK_URL
-      const storedUrl = localStorage.getItem('tms_webhook_url');
-      if (storedUrl || DEFAULT_WEBHOOK_URL) {
-        webhookUrl = storedUrl || DEFAULT_WEBHOOK_URL;
-        document.getElementById('sheetWebhookUrl').value = webhookUrl;
-        updateConnectionStatus(true);
-      }
     };
+
+    // Bridging Screen Controls
+    function closeBridgingScreen() {
+      const screen = document.getElementById('bridgingScreen');
+      screen.classList.add('hidden');
+      setTimeout(resizeCanvas, 60);
+    }
+
+    function openBridgingScreen() {
+      const screen = document.getElementById('bridgingScreen');
+      screen.classList.remove('hidden');
+    }
+
+    function copyPortalLink() {
+      const textarea = document.createElement('textarea');
+      textarea.value = PORTAL_URL;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        const btn = document.getElementById('btnCopyPortalLink');
+        btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i><span>Link Tersalin!</span>`;
+        setTimeout(() => {
+          btn.innerHTML = `<i class="fa-regular fa-copy"></i><span>Salin Link Portal</span>`;
+        }, 2000);
+        showToast('Link Tersalin', 'URL Portal Sosialisasi TMS berhasil disalin ke clipboard.', 'success');
+      } catch (err) {
+        showToast('Info', 'Salin manual: ' + PORTAL_URL, 'info');
+      }
+      document.body.removeChild(textarea);
+    }
 
     function populateDropdowns() {
       const cabangSelect = document.getElementById('cabangSelect');
-      const namaSelect = document.getElementById('namaSelect');
-
-      // Ambil daftar cabang unik
       const uniqueBranches = [...new Set(MASTER_DATA_TMS.map(item => item.cabang))];
       cabangSelect.innerHTML = '<option value="" disabled selected>-- Pilih Cabang --</option>';
       uniqueBranches.forEach(cabang => {
@@ -692,7 +697,6 @@
         cabangSelect.appendChild(opt);
       });
 
-      // Isi semua nama TA pada awalnya (dengan keterangan cabang)
       renderNamaOptions(MASTER_DATA_TMS);
     }
 
@@ -716,11 +720,9 @@
       const selectedCabang = document.getElementById('cabangSelect').value;
       const filteredTAs = MASTER_DATA_TMS.filter(item => item.cabang === selectedCabang);
       
-      // Reset vehicle fields first
       document.getElementById('noRangka').value = '';
       document.getElementById('tipeMesin').value = '';
 
-      // Jika cabang hanya punya 1 TA, langsung pilih otomatis; jika 2 (seperti Kaligawe), biarkan user memilih salah satu
       renderNamaOptions(filteredTAs, true);
     }
 
@@ -747,14 +749,14 @@
       if (tab === 'form') {
         formSection.classList.remove('hidden');
         listSection.classList.add('hidden');
-        tabFormBtn.className = 'tab-active pb-3 px-4 text-sm flex items-center gap-2';
-        tabListBtn.className = 'text-slate-500 pb-3 px-4 text-sm flex items-center gap-2 hover:text-slate-800 transition';
+        tabFormBtn.className = 'tab-active pb-3 px-4 text-sm flex items-center gap-2 cursor-pointer';
+        tabListBtn.className = 'text-slate-500 pb-3 px-4 text-sm flex items-center gap-2 hover:text-slate-800 transition cursor-pointer';
         setTimeout(resizeCanvas, 50);
       } else {
         formSection.classList.add('hidden');
         listSection.classList.remove('hidden');
-        tabListBtn.className = 'tab-active pb-3 px-4 text-sm flex items-center gap-2';
-        tabFormBtn.className = 'text-slate-500 pb-3 px-4 text-sm flex items-center gap-2 hover:text-slate-800 transition';
+        tabListBtn.className = 'tab-active pb-3 px-4 text-sm flex items-center gap-2 cursor-pointer';
+        tabFormBtn.className = 'text-slate-500 pb-3 px-4 text-sm flex items-center gap-2 hover:text-slate-800 transition cursor-pointer';
       }
     }
 
@@ -889,113 +891,22 @@
       resetForm();
       switchTab('list');
 
-      // 2. Non-blocking Background Sync ke Google Sheets
-      if (webhookUrl) {
-        showToast('Tersimpan Instan!', `BAST ${personObj.nama} (${personObj.cabang}) tercatat & sinkron ke Google Sheet.`, 'success');
-        fetch(webhookUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(newRegistration)
-        }).catch(err => {
-          console.warn('Background sync warning:', err);
-        });
-      } else {
-        showToast('Tersimpan Instan!', `BAST ${personObj.nama} (${personObj.cabang}) berhasil dicatat.`, 'success');
-      }
+      // 2. Non-blocking Background Sync ke Google Sheets (Hardcoded URL)
+      showToast('Tersimpan Instan!', `BAST ${personObj.nama} (${personObj.cabang}) tercatat & otomatis sinkron ke Google Sheet.`, 'success');
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(newRegistration)
+      }).catch(err => {
+        console.warn('Background sync warning:', err);
+      });
     }
 
     function resetForm() {
       document.getElementById('registrationForm').reset();
       populateDropdowns();
       clearSignature();
-    }
-
-    // Webhook Configuration Functions
-    function saveWebhookUrl() {
-      const inputUrl = document.getElementById('sheetWebhookUrl').value.trim();
-      webhookUrl = inputUrl;
-      localStorage.setItem('tms_webhook_url', webhookUrl);
-      updateConnectionStatus(!!webhookUrl);
-      closeModal('configModal');
-
-      if (webhookUrl) {
-        showToast('Tersambung', 'Google Apps Script URL berhasil disimpan!', 'success');
-      } else {
-        showToast('Mode Lokal', 'URL dikosongkan. Sistem beroperasi dalam mode lokal.', 'info');
-      }
-    }
-
-    function testWebhookConnection() {
-      const inputUrl = document.getElementById('sheetWebhookUrl').value.trim();
-      if (!inputUrl) {
-        showToast('URL Kosong', 'Masukkan Web App URL terlebih dahulu.', 'error');
-        return;
-      }
-      showToast('Menguji Koneksi...', 'Mengirim baris tes ke Google Sheet...', 'info');
-      fetch(inputUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({
-          timestamp: new Date().toLocaleString('id-ID'),
-          cabang: 'HO Semarang (Tes Sistem)',
-          nama: 'Tes Koneksi BAST',
-          nik: 'TEST-001',
-          noHpPribadi: '08123456789',
-          modelArmada: 'Toyota Hilux Rangga',
-          noRangka: 'MR3ACAEA2R0390040',
-          tipeMesin: 'Diesel',
-          noGsmTms: '081122334455',
-          snTablet: 'TAB-TEST-01',
-          kitSummary: 'Lengkap (Tablet, Stylus, Charger, Kartu GSM TMS)',
-          agreement: true
-        })
-      })
-      .then(() => {
-        showToast('Tes Terkirim', 'Silakan cek baris baru di Google Sheet Anda!', 'success');
-      })
-      .catch((err) => {
-        showToast('Gagal Uji', 'Tidak dapat menghubungi URL: ' + err.message, 'error');
-      });
-    }
-
-    function updateConnectionStatus(isConnected) {
-      const banner = document.getElementById('connectionBanner');
-      const label = document.getElementById('configStatusLabel');
-      if (isConnected) {
-        banner.className = 'mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-sm';
-        banner.innerHTML = `
-          <div class="flex items-start gap-3">
-            <i class="fa-solid fa-circle-check text-emerald-600 text-lg mt-0.5"></i>
-            <div>
-              <span class="font-semibold text-emerald-950">Real-Time Auto-Sync Aktif (Zero Delay)</span>
-              <p class="text-xs text-emerald-700 mt-0.5">Setiap TA yang menyelesaikan BAST akan langsung tercatat ke Google Spreadsheet & tabel di bawah secara instan.</p>
-            </div>
-          </div>
-          <button onclick="document.getElementById('btnOpenConfig').click()" class="text-xs font-bold text-emerald-900 bg-emerald-200 hover:bg-emerald-300 px-3 py-1.5 rounded-lg whitespace-nowrap transition">
-            Pengaturan URL
-          </button>
-        `;
-        label.textContent = "Sheet Terhubung";
-        label.classList.add("text-emerald-700");
-      } else {
-        banner.className = 'mb-6 p-4 rounded-xl bg-amber-50 border border-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-sm';
-        banner.innerHTML = `
-          <div class="flex items-start gap-3">
-            <i class="fa-solid fa-circle-exclamation text-amber-600 text-lg mt-0.5"></i>
-            <div>
-              <span class="font-semibold text-amber-900">Mode Simulasi Mandiri / Siap GitHub Pages</span>
-              <p class="text-xs text-amber-700 mt-0.5">Untuk auto-sync real-time tanpa delay ke Google Sheet, masukkan URL Web App pada tombol <strong>"Koneksi Spreadsheet"</strong>.</p>
-            </div>
-          </div>
-          <button onclick="document.getElementById('btnOpenConfig').click()" class="text-xs font-bold text-amber-900 bg-amber-200 hover:bg-amber-300 px-3 py-1.5 rounded-lg whitespace-nowrap transition">
-            Hubungkan Sheet Sekarang
-          </button>
-        `;
-        label.textContent = "Koneksi Spreadsheet";
-        label.classList.remove("text-emerald-700");
-      }
     }
 
     function renderTable() {
@@ -1144,40 +1055,12 @@
       }
     }
 
-    // Modal Helpers
-    document.getElementById('btnOpenConfig').onclick = () => openModal('configModal');
-    document.getElementById('btnOpenScriptModal').onclick = () => openModal('scriptGuideModal');
-
     function openModal(id) {
       document.getElementById(id).classList.remove('hidden');
     }
 
     function closeModal(id) {
       document.getElementById(id).classList.add('hidden');
-    }
-
-    function copyAppsScriptCode() {
-      const code = document.getElementById('gasCodeBlock').innerText;
-      const textarea = document.createElement('textarea');
-      textarea.value = code;
-      textarea.style.position = 'fixed';
-      textarea.style.opacity = '0';
-      document.body.appendChild(textarea);
-      textarea.select();
-      try {
-        document.execCommand('copy');
-        const btn = document.getElementById('btnCopyCode');
-        btn.innerHTML = `<i class="fa-solid fa-check"></i><span>Tersalin!</span>`;
-        btn.classList.add('bg-emerald-600');
-        setTimeout(() => {
-          btn.innerHTML = `<i class="fa-regular fa-copy"></i><span>Salin Kode</span>`;
-          btn.classList.remove('bg-emerald-600');
-        }, 2000);
-        showToast('Tersalin', 'Kode Google Apps Script berhasil disalin.', 'success');
-      } catch (err) {
-        showToast('Gagal Salin', 'Silakan blok kode secara manual.', 'error');
-      }
-      document.body.removeChild(textarea);
     }
 
     function showToast(title, message, type = 'success') {
