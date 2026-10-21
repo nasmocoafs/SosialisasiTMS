@@ -3,29 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registrasi Training & Serah Terima TMS Nasmoco</title>
+  <title>Portal Sosialisasi & BAST TMS — Nasmoco Group</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts: Inter -->
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
             nasmoco: {
-              red: '#EE1D23',
-              darkred: '#C71419',
-              gray: '#2B2B2B',
-              light: '#F8FAFC',
+              red: '#E11D24',
+              darkred: '#B9141A',
+              dark: '#0B1120',
+              card: '#131C31',
             }
           }
         }
@@ -35,12 +36,14 @@
 
   <style>
     body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: #F1F5F9;
       color: #0F172A;
+      -webkit-font-smoothing: antialiased;
     }
     .tab-active {
-      border-bottom: 3px solid #EE1D23;
-      color: #EE1D23;
+      border-bottom: 3px solid #E11D24;
+      color: #E11D24;
       font-weight: 700;
     }
     .canvas-container {
@@ -57,151 +60,228 @@
       background: #CBD5E1;
       border-radius: 9999px;
     }
-    @keyframes pulse-border {
-      0%, 100% { border-color: rgba(238, 29, 35, 0.4); }
-      50% { border-color: rgba(238, 29, 35, 1); }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(225, 29, 36, 0.35); }
+      50% { box-shadow: 0 0 28px 6px rgba(225, 29, 36, 0.2); }
     }
-    .qr-frame {
-      animation: pulse-border 2.5s infinite;
+    .btn-glow {
+      animation: pulseGlow 2.8s infinite;
+    }
+    @media print {
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+      body {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        background-color: #080D1A !important;
+      }
+      header, main, footer, .no-print {
+        display: none !important;
+      }
+      #bridgingPortal {
+        position: static !important;
+        display: flex !important;
+        min-height: 100vh !important;
+        background-color: #080D1A !important;
+      }
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col font-sans antialiased">
+<body class="min-h-screen flex flex-col antialiased selection:bg-red-600 selection:text-white">
 
-  <!-- TAMPILAN BRIDGING / QR PORTAL GATEWAY -->
-  <div id="bridgingScreen" class="fixed inset-0 z-50 bg-slate-950 text-white flex flex-col justify-between p-6 sm:p-10 overflow-y-auto">
-    <!-- Top Branding Bar -->
-    <div class="max-w-6xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-5">
+  <!-- ========================================================================= -->
+  <!-- LAYAR BRIDGING / PORTAL QR CODE (TAMPIL SAAT AWAL / PROYEKTOR & CETAK)    -->
+  <!-- ========================================================================= -->
+  <div id="bridgingPortal" class="fixed inset-0 z-50 bg-[#080D1A] text-white overflow-y-auto flex flex-col justify-between">
+    <!-- Subtle Background Glow -->
+    <div class="pointer-events-none fixed inset-0 overflow-hidden z-0">
+      <div class="absolute -top-40 -left-40 w-96 h-96 bg-red-600/15 rounded-full blur-[130px]"></div>
+      <div class="absolute bottom-0 right-0 w-[28rem] h-[28rem] bg-blue-600/10 rounded-full blur-[140px]"></div>
+    </div>
+
+    <!-- Top Bar Bridging -->
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-10 pt-6 pb-4 flex items-center justify-between border-b border-slate-800/80">
       <div class="flex items-center gap-3.5">
-        <div class="w-12 h-12 rounded-2xl bg-red-600 text-white flex items-center justify-center font-extrabold text-2xl shadow-lg shadow-red-600/30">
-          <i class="fa-solid fa-truck-fast"></i>
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-red-600 to-red-700 text-white flex items-center justify-center shadow-lg shadow-red-600/25 shrink-0">
+          <i class="fa-solid fa-truck-fast text-lg"></i>
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-extrabold uppercase tracking-widest text-red-500">AFTERSALES DEPARTMENT • MARKETING DIVISION</span>
-          </div>
-          <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">TOYOTA MOBILE SERVICE (TMS) — NASMOCO GROUP</h1>
+          <p class="text-[11px] font-bold tracking-[0.14em] uppercase text-red-400 leading-tight">
+            AFTERSALES DEPARTMENT • MARKETING DIVISION
+          </p>
+          <h1 class="text-base sm:text-xl font-extrabold tracking-tight text-white leading-snug mt-0.5">
+            TOYOTA MOBILE SERVICE (TMS) — NASMOCO GROUP
+          </h1>
         </div>
       </div>
-      <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3.5 py-1.5 rounded-full text-emerald-400 text-xs font-bold">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        <span>Live System Connected</span>
+
+      <div class="flex items-center gap-2.5 shrink-0">
+        <button onclick="window.print()" class="no-print inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold transition">
+          <i class="fa-solid fa-print text-red-400"></i>
+          <span>Cetak Poster QR</span>
+        </button>
+        <div class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>Live System Connected</span>
+        </div>
       </div>
     </div>
 
-    <!-- Center Content: Split Presentation & QR Card -->
-    <div class="max-w-6xl w-full mx-auto my-auto py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-      
-      <!-- Left Column: Welcome & Instructions -->
-      <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-600/20 border border-red-500/30 text-red-300 text-xs font-bold uppercase tracking-wider">
-          <i class="fa-solid fa-satellite-dish"></i> Portal Sosialisasi, Trial & BAST Hardware
+    <!-- Main Center Content Bridging -->
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-10 py-6 my-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+        
+        <!-- Left Column: Welcome & Action Steps (7 Cols) -->
+        <div class="lg:col-span-7 space-y-6 text-left">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-500/15 border border-red-500/30 text-red-300 text-xs font-bold tracking-wide uppercase">
+            <i class="fa-solid fa-satellite-dish text-red-400"></i>
+            <span>PORTAL SOSIALISASI, TRIAL &amp; BAST HARDWARE</span>
+          </div>
+
+          <div class="space-y-3.5">
+            <h2 class="text-3xl sm:text-4xl lg:text-[40px] font-extrabold tracking-tight text-white leading-[1.22]">
+              Selamat Datang Peserta Sosialisasi <span class="text-red-500">TMS System Nasmoco</span>
+            </h2>
+            <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl font-normal">
+              Silakan pindai (<em>scan</em>) <strong>QR Code</strong> di samping menggunakan perangkat <strong>Tablet Operasional TMS</strong> atau Smartphone Anda untuk mengisi <strong>Daftar Hadir &amp; Berita Acara Serah Terima (BAST)</strong> unit Hardware TMS System.
+            </p>
+          </div>
+
+          <!-- 3 Steps Cards (Clean Alignment & Equal Height) -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1">
+            <div class="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-4 flex flex-col justify-between hover:border-slate-700 transition">
+              <div class="w-8 h-8 rounded-lg bg-red-500/15 border border-red-500/30 text-red-400 font-mono text-xs font-bold flex items-center justify-center mb-3">
+                01
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-white leading-snug mb-1">Scan QR / Buka Link</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  Akses portal melalui browser di Tablet TMS yang baru dibagikan.
+                </p>
+              </div>
+            </div>
+
+            <div class="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-4 flex flex-col justify-between hover:border-slate-700 transition">
+              <div class="w-8 h-8 rounded-lg bg-red-500/15 border border-red-500/30 text-red-400 font-mono text-xs font-bold flex items-center justify-center mb-3">
+                02
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-white leading-snug mb-1">Pilih Cabang &amp; TA</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  Data No. Rangka &amp; Mesin Hilux Rangga akan terisi otomatis.
+                </p>
+              </div>
+            </div>
+
+            <div class="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-4 flex flex-col justify-between hover:border-slate-700 transition">
+              <div class="w-8 h-8 rounded-lg bg-red-500/15 border border-red-500/30 text-red-400 font-mono text-xs font-bold flex items-center justify-center mb-3">
+                03
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-white leading-snug mb-1">Cek Kit &amp; TTD Digital</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  Verifikasi Tablet, Stylus, Charger, &amp; GSM lalu kirim BAST.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA Buttons (No Awkward Text Wrapping) -->
+          <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
+            <button onclick="enterMainApp()" class="no-print btn-glow px-6 py-3.5 rounded-2xl bg-red-600 hover:bg-red-500 active:scale-[0.99] text-white font-bold text-sm flex items-center justify-center gap-3 shadow-lg transition whitespace-nowrap">
+              <span>Buka Formulir Registrasi Sekarang</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+            <a href="https://wa.me/6282133488787?text=0" target="_blank" rel="noopener noreferrer" class="px-5 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-emerald-400 font-semibold text-xs sm:text-sm flex items-center justify-center gap-2.5 transition whitespace-nowrap">
+              <i class="fa-brands fa-whatsapp text-base"></i>
+              <span>Helpdesk ITCare: +62 821-3348-8787 (Ketik 0)</span>
+            </a>
+          </div>
         </div>
 
-        <h2 class="text-3xl sm:text-5xl font-extrabold leading-tight tracking-tight text-white">
-          Selamat Datang Peserta Sosialisasi <span class="text-red-500">TMS Nasmoco</span>
-        </h2>
+        <!-- Right Column: QR Card (5 Cols - Full URL Visible Without Scrollbar) -->
+        <div class="lg:col-span-5 flex justify-center lg:justify-end">
+          <div class="bg-white text-slate-900 rounded-3xl p-6 sm:p-7 shadow-2xl border-4 border-red-500/20 w-full max-w-[430px] text-center">
+            <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-red-50 text-red-600 text-[11px] font-extrabold uppercase tracking-wider mb-2">
+              <i class="fa-solid fa-qrcode"></i>
+              <span>SCAN UNTUK AKSES APLIKASI</span>
+            </div>
+            
+            <h3 class="text-sm font-extrabold text-slate-800 tracking-tight uppercase mb-4">
+              PORTAL REGISTRASI &amp; BAST TMS
+            </h3>
 
-        <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0">
-          Silakan pindai (<em>scan</em>) <strong>QR Code</strong> di samping menggunakan perangkat <strong>Tablet Operasional TMS</strong> atau Smartphone Anda untuk mengisi <strong>Daftar Hadir & Berita Acara Serah Terima (BAST)</strong> unit Toyota Hilux Rangga.
-        </p>
+            <!-- QR Image Container -->
+            <div class="p-3.5 bg-white rounded-2xl border-2 border-dashed border-slate-200 inline-block mb-4">
+              <img 
+                src="https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=6&data=https%3A%2F%2Fnasmocoafs.github.io%2FSosialisasiTMS%2F" 
+                alt="QR Code Sosialisasi TMS Nasmoco" 
+                class="w-48 h-48 sm:w-56 sm:h-56 object-contain mx-auto rounded-lg"
+                onerror="this.src='https://placehold.co/320x320/ffffff/0f172a?text=QR+TMS+Nasmoco'"
+              >
+            </div>
 
-        <!-- Step Indicators -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2 text-left">
-          <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl">
-            <div class="w-8 h-8 rounded-lg bg-red-600/20 text-red-400 font-extrabold text-sm flex items-center justify-center mb-2">01</div>
-            <p class="text-xs font-bold text-white">Scan QR / Buka Link</p>
-            <p class="text-[11px] text-slate-400 mt-0.5">Akses portal melalui browser di Tablet TMS yang baru dibagikan.</p>
-          </div>
-          <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl">
-            <div class="w-8 h-8 rounded-lg bg-red-600/20 text-red-400 font-extrabold text-sm flex items-center justify-center mb-2">02</div>
-            <p class="text-xs font-bold text-white">Pilih Cabang & TA</p>
-            <p class="text-[11px] text-slate-400 mt-0.5">Data No. Rangka & Mesin Hilux Rangga akan terisi otomatis.</p>
-          </div>
-          <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl">
-            <div class="w-8 h-8 rounded-lg bg-red-600/20 text-red-400 font-extrabold text-sm flex items-center justify-center mb-2">03</div>
-            <p class="text-xs font-bold text-white">Cek Kit & TTD Digital</p>
-            <p class="text-[11px] text-slate-400 mt-0.5">Verifikasi Tablet, Stylus, Charger, & GSM lalu kirim BAST.</p>
+            <!-- Direct URL Box (Full Visible Without Scrollbar or Clipping) -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-3 mb-3.5">
+              <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                TAUTAN LANGSUNG (URL):
+              </p>
+              <a href="https://nasmocoafs.github.io/SosialisasiTMS/" target="_blank" rel="noopener noreferrer" class="block font-mono text-[11px] sm:text-xs font-extrabold text-red-600 hover:underline tracking-tight whitespace-nowrap">
+                https://nasmocoafs.github.io/SosialisasiTMS/
+              </a>
+            </div>
+
+            <button onclick="copyPortalLink()" id="btnCopyPortal" class="no-print w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition">
+              <i class="fa-regular fa-copy"></i>
+              <span>Salin Link Portal</span>
+            </button>
           </div>
         </div>
 
-        <!-- Direct Action Button (if opened directly on tablet) -->
-        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-          <button onclick="closeBridgingScreen()" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-extrabold text-sm shadow-xl shadow-red-600/30 flex items-center justify-center gap-3 transition cursor-pointer">
-            <span>Buka Formulir Registrasi Sekarang</span>
-            <i class="fa-solid fa-arrow-right"></i>
-          </button>
-          <a href="https://wa.me/6282133488787?text=0" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-5 py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-emerald-400 font-bold text-xs flex items-center justify-center gap-2 transition">
-            <i class="fa-brands fa-whatsapp text-base"></i>
-            <span>Helpdesk ITCare: +62 821-3348-8787 (Ketik 0)</span>
-          </a>
-        </div>
       </div>
-
-      <!-- Right Column: Large QR Code Card -->
-      <div class="lg:col-span-5 flex justify-center">
-        <div class="bg-white text-slate-900 rounded-3xl p-6 sm:p-8 shadow-2xl max-w-sm w-full text-center border-4 border-red-600 qr-frame relative">
-          <div class="inline-flex items-center gap-1.5 bg-red-50 text-red-600 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider mb-3 border border-red-100">
-            <i class="fa-solid fa-qrcode"></i> Scan untuk Akses Aplikasi
-          </div>
-
-          <h3 class="text-base font-extrabold text-slate-800 mb-4">PORTAL REGISTRASI & BAST TMS</h3>
-
-          <!-- QR Code Image with Fallback -->
-          <div class="bg-slate-50 p-4 rounded-2xl border-2 border-dashed border-slate-200 inline-block mb-4">
-            <img 
-              src="https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=8&data=https%3A%2F%2Fnasmocoafs.github.io%2FSosialisasiTMS%2F" 
-              alt="QR Code Sosialisasi TMS Nasmoco" 
-              class="w-56 h-56 sm:w-64 sm:h-64 mx-auto rounded-lg object-contain"
-              onerror="this.onerror=null; this.src='https://placehold.co/320x320/ffffff/0f172a?text=nasmocoafs.github.io/SosialisasiTMS';"
-            >
-          </div>
-
-          <!-- Link Box & Copy Button -->
-          <div class="bg-slate-100 p-3 rounded-xl border border-slate-200 mb-4">
-            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Tautan Langsung (URL):</p>
-            <p class="font-mono font-bold text-xs text-red-600 break-all select-all">https://nasmocoafs.github.io/SosialisasiTMS/</p>
-          </div>
-
-          <button onclick="copyPortalLink()" id="btnCopyPortalLink" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition">
-            <i class="fa-regular fa-copy"></i>
-            <span>Salin Link Portal</span>
-          </button>
-        </div>
-      </div>
-
     </div>
 
-    <!-- Bottom Bar -->
-    <div class="max-w-6xl w-full mx-auto border-t border-slate-800/80 pt-4 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
-      <span>PT New Ratna Motor (Nasmoco Group) • Standarisasi Armada Toyota Hilux Rangga</span>
-      <span>23 Armada Operasional Terdaftar</span>
+    <!-- Bottom Footer Bridging -->
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-10 py-3.5 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2">
+      <span>PT New Ratna Motor (Nasmoco Group) • Standardisasi Operasional Toyota Hilux Rangga</span>
+      <span class="font-mono text-[11px] text-slate-500">Auto-Sync Spreadsheet Active</span>
     </div>
   </div>
 
-  <!-- Top Header -->
+  <!-- ========================================================================= -->
+  <!-- HALAMAN UTAMA APLIKASI FORM REGISTRASI & BAST HARDWARE                    -->
+  <!-- ========================================================================= -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-red-600 text-white flex items-center justify-center font-extrabold text-lg shadow-sm">
+      <div class="flex items-center gap-3.5">
+        <div class="w-10 h-10 rounded-xl bg-red-600 text-white flex items-center justify-center font-extrabold text-lg shadow-sm shrink-0">
           <i class="fa-solid fa-truck-fast"></i>
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">TOYOTA MOBILE SERVICE (TMS)</h1>
-            <span class="px-2 py-0.5 text-[10px] font-bold uppercase bg-red-50 text-red-600 rounded-md border border-red-200">Nasmoco Group</span>
+          <div class="flex flex-wrap items-center gap-2">
+            <h1 class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight leading-snug">
+              TOYOTA MOBILE SERVICE (TMS)
+            </h1>
+            <span class="px-2 py-0.5 text-[10px] font-bold uppercase bg-red-50 text-red-600 rounded-md border border-red-200">
+              Nasmoco Group
+            </span>
           </div>
-          <p class="text-xs text-slate-500">Registrasi Training Offline, Trial Aplikasi & BAST Hardware Hilux Rangga</p>
+          <p class="text-xs text-slate-500 leading-normal mt-0.5">
+            Registrasi Training Offline, Trial Aplikasi &amp; BAST Hardware Hilux Rangga
+          </p>
         </div>
       </div>
 
       <div class="flex items-center gap-2.5 self-end sm:self-auto">
-        <div class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold">
+        <span class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>Auto-Sync Cloud Aktif</span>
-        </div>
-        <button onclick="openBridgingScreen()" class="px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-900 hover:bg-slate-800 text-white flex items-center gap-2 transition shadow-sm cursor-pointer">
-          <i class="fa-solid fa-qrcode text-red-400"></i>
+          <span>Live Sync Spreadsheet</span>
+        </span>
+        <button onclick="openBridgingPortal()" class="px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-900 hover:bg-slate-800 text-white flex items-center gap-2 transition shadow-sm whitespace-nowrap">
+          <i class="fa-solid fa-qrcode"></i>
           <span>Tampilkan Layar QR</span>
         </button>
       </div>
@@ -212,14 +292,14 @@
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
     <!-- Navigation Tabs -->
-    <div class="flex border-b border-slate-200 mb-6 bg-white rounded-t-xl px-4 pt-2">
-      <button id="tabFormBtn" onclick="switchTab('form')" class="tab-active pb-3 px-4 text-sm flex items-center gap-2 cursor-pointer">
+    <div class="flex border-b border-slate-200 mb-6 bg-white rounded-t-xl px-4 pt-2 overflow-x-auto">
+      <button id="tabFormBtn" onclick="switchTab('form')" class="tab-active pb-3 px-4 text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-clipboard-user"></i>
-        Form Registrasi & BAST
+        <span>Form Registrasi &amp; BAST</span>
       </button>
-      <button id="tabListBtn" onclick="switchTab('list')" class="text-slate-500 pb-3 px-4 text-sm flex items-center gap-2 hover:text-slate-800 transition cursor-pointer">
+      <button id="tabListBtn" onclick="switchTab('list')" class="text-slate-500 pb-3 px-4 text-xs sm:text-sm flex items-center gap-2 hover:text-slate-800 transition whitespace-nowrap">
         <i class="fa-solid fa-table-list"></i>
-        Daftar Kehadiran & Hardware (<span id="countBadge">0</span>/23)
+        <span>Daftar Kehadiran &amp; Hardware (<span id="countBadge">0</span>/23)</span>
       </button>
     </div>
 
@@ -229,10 +309,14 @@
       <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
         <div class="border-b border-slate-100 pb-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h2 class="text-xl font-bold text-slate-800">Formulir Kehadiran & BAST Hardware TMS</h2>
-            <p class="text-xs text-slate-500 mt-1">Pilih Cabang & Nama TA untuk mengisi otomatis data Nomor Rangka dan Mesin Hilux Rangga.</p>
+            <h2 class="text-lg sm:text-xl font-extrabold text-slate-800 leading-snug">
+              Formulir Kehadiran &amp; BAST Hardware TMS
+            </h2>
+            <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+              Pilih Cabang &amp; Nama TA untuk mengisi otomatis data Nomor Rangka dan Mesin Hilux Rangga.
+            </p>
           </div>
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-600 border border-red-100 self-start">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-600 border border-red-100 self-start shrink-0">
             <i class="fa-solid fa-bolt"></i> Auto-Fill Master Data
           </span>
         </div>
@@ -241,24 +325,28 @@
           <!-- Row 1: Cabang & Nama TA (Dropdown Master Data) -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">1. Pilih Cabang Nasmoco *</label>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                1. Pilih Cabang Nasmoco *
+              </label>
               <div class="relative">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 pointer-events-none">
                   <i class="fa-solid fa-building"></i>
                 </span>
-                <select id="cabangSelect" required onchange="handleCabangChange()" class="w-full pl-9 pr-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none bg-white font-medium">
+                <select id="cabangSelect" required onchange="handleCabangChange()" class="w-full pl-10 pr-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none bg-white font-semibold text-slate-800">
                   <option value="" disabled selected>-- Pilih Cabang --</option>
                 </select>
               </div>
             </div>
 
             <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">2. Nama Technician Advisor (TA) *</label>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                2. Nama Technician Advisor (TA) *
+              </label>
               <div class="relative">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 pointer-events-none">
                   <i class="fa-solid fa-user-check"></i>
                 </span>
-                <select id="namaSelect" required onchange="handleTaChange()" class="w-full pl-9 pr-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none bg-white font-medium">
+                <select id="namaSelect" required onchange="handleTaChange()" class="w-full pl-10 pr-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none bg-white font-semibold text-slate-800">
                   <option value="" disabled selected>-- Pilih Nama TA --</option>
                 </select>
               </div>
@@ -268,21 +356,25 @@
           <!-- Row 2: Identitas Tambahan TA -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">NIK / NPK Karyawan *</label>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                NIK / NPK Karyawan *
+              </label>
               <div class="relative">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 pointer-events-none">
                   <i class="fa-solid fa-id-badge"></i>
                 </span>
-                <input type="text" id="nikKaryawan" required placeholder="Contoh: NRM-8829" class="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none">
+                <input type="text" id="nikKaryawan" required placeholder="Contoh: NRM-8829" class="w-full pl-10 pr-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none">
               </div>
             </div>
             <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">No. WhatsApp Pribadi TA *</label>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                No. WhatsApp Pribadi TA *
+              </label>
               <div class="relative">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 pointer-events-none">
                   <i class="fa-brands fa-whatsapp"></i>
                 </span>
-                <input type="tel" id="noHpPribadi" required placeholder="Contoh: 081234567890" class="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none">
+                <input type="tel" id="noHpPribadi" required placeholder="Contoh: 081234567890" class="w-full pl-10 pr-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none">
               </div>
             </div>
           </div>
@@ -291,21 +383,27 @@
           <div class="pt-4 border-t border-slate-100">
             <h3 class="text-xs font-extrabold uppercase tracking-wider text-red-600 mb-3 flex items-center gap-1.5">
               <i class="fa-solid fa-truck-pickup"></i>
-              Spesifikasi Armada TMS (Terisi Otomatis)
+              <span>Spesifikasi Armada TMS (Terisi Otomatis)</span>
             </h3>
             
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 bg-slate-50 p-4 rounded-xl border border-slate-200/80">
               <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Model Kendaraan</label>
-                <input type="text" id="modelArmada" value="Toyota Hilux Rangga" readonly class="w-full px-3 py-1.5 text-xs font-bold text-slate-700 bg-slate-200/70 border border-slate-300 rounded-lg cursor-not-allowed">
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                  Model Kendaraan
+                </label>
+                <input type="text" id="modelArmada" value="Toyota Hilux Rangga" readonly class="w-full px-3 py-2 text-xs font-bold text-slate-700 bg-slate-200/70 border border-slate-300 rounded-lg cursor-not-allowed">
               </div>
               <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Nomor Rangka (VIN)</label>
-                <input type="text" id="noRangka" readonly placeholder="Otomatis saat pilih TA" class="w-full px-3 py-1.5 text-xs font-mono font-bold text-slate-800 bg-white border border-slate-200 rounded-lg">
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                  Nomor Rangka (VIN)
+                </label>
+                <input type="text" id="noRangka" readonly placeholder="Otomatis saat pilih TA" class="w-full px-3 py-2 text-xs font-mono font-bold text-slate-800 bg-white border border-slate-200 rounded-lg">
               </div>
               <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Tipe Mesin</label>
-                <input type="text" id="tipeMesin" readonly placeholder="Diesel / Gasoline" class="w-full px-3 py-1.5 text-xs font-bold text-slate-800 bg-white border border-slate-200 rounded-lg">
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                  Tipe Mesin
+                </label>
+                <input type="text" id="tipeMesin" readonly placeholder="Diesel / Gasoline" class="w-full px-3 py-2 text-xs font-bold text-slate-800 bg-white border border-slate-200 rounded-lg">
               </div>
             </div>
           </div>
@@ -314,48 +412,62 @@
           <div class="pt-4 border-t border-slate-100">
             <h3 class="text-xs font-extrabold uppercase tracking-wider text-red-600 mb-3 flex items-center gap-1.5">
               <i class="fa-solid fa-tablet-screen-button"></i>
-              Detail Serah Terima Hardware & Kartu GSM TMS
+              <span>Detail Serah Terima Hardware &amp; Kartu GSM TMS</span>
             </h3>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">No. HP Kartu GSM Khusus TMS *</label>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                  No. HP Kartu GSM Khusus TMS *
+                </label>
                 <div class="relative">
-                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 pointer-events-none">
                     <i class="fa-solid fa-sim-card"></i>
                   </span>
-                  <input type="tel" id="noGsmTms" required placeholder="Nomor GSM TMS yang dibagikan" class="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none">
+                  <input type="tel" id="noGsmTms" required placeholder="Nomor GSM TMS yang dibagikan" class="w-full pl-10 pr-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none">
                 </div>
               </div>
               <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">SN / IMEI Tablet TMS (Opsional/Jika Ada)</label>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                  SN / IMEI Tablet TMS (Opsional)
+                </label>
                 <div class="relative">
-                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 pointer-events-none">
                     <i class="fa-solid fa-barcode"></i>
                   </span>
-                  <input type="text" id="snTablet" placeholder="Contoh: TAB-TMS-01 / IMEI" class="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none">
+                  <input type="text" id="snTablet" placeholder="Contoh: TAB-TMS-01 / IMEI" class="w-full pl-10 pr-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none">
                 </div>
               </div>
             </div>
 
             <!-- Checklist 4 Item Wajib -->
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Checklist Kelengkapan Kit Diterima (Wajib Ceklis Semua) *</label>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+              Checklist Kelengkapan Kit Diterima (Wajib Ceklis Semua) *
+            </label>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-100/80 cursor-pointer transition">
-                <input type="checkbox" id="kitTablet" required class="rounded text-red-600 focus:ring-red-500 w-4 h-4">
-                <span class="text-xs font-semibold text-slate-700"><i class="fa-solid fa-tablet-button text-slate-500 mr-1.5"></i>1. Unit Tablet Operasional TMS</span>
+              <label class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-100/80 cursor-pointer transition">
+                <input type="checkbox" id="kitTablet" required class="rounded text-red-600 focus:ring-red-500 w-4 h-4 shrink-0">
+                <span class="text-xs font-semibold text-slate-700 leading-snug">
+                  <i class="fa-solid fa-tablet-button text-slate-500 mr-1.5"></i>1. Unit Tablet Operasional TMS
+                </span>
               </label>
-              <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-100/80 cursor-pointer transition">
-                <input type="checkbox" id="kitStylus" required class="rounded text-red-600 focus:ring-red-500 w-4 h-4">
-                <span class="text-xs font-semibold text-slate-700"><i class="fa-solid fa-pen-nib text-slate-500 mr-1.5"></i>2. Stylus Pen Tablet</span>
+              <label class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-100/80 cursor-pointer transition">
+                <input type="checkbox" id="kitStylus" required class="rounded text-red-600 focus:ring-red-500 w-4 h-4 shrink-0">
+                <span class="text-xs font-semibold text-slate-700 leading-snug">
+                  <i class="fa-solid fa-pen-nib text-slate-500 mr-1.5"></i>2. Stylus Pen Tablet
+                </span>
               </label>
-              <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-100/80 cursor-pointer transition">
-                <input type="checkbox" id="kitCharger" required class="rounded text-red-600 focus:ring-red-500 w-4 h-4">
-                <span class="text-xs font-semibold text-slate-700"><i class="fa-solid fa-plug-circle-bolt text-slate-500 mr-1.5"></i>3. Charger & Kabel Data</span>
+              <label class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-100/80 cursor-pointer transition">
+                <input type="checkbox" id="kitCharger" required class="rounded text-red-600 focus:ring-red-500 w-4 h-4 shrink-0">
+                <span class="text-xs font-semibold text-slate-700 leading-snug">
+                  <i class="fa-solid fa-plug-circle-bolt text-slate-500 mr-1.5"></i>3. Charger &amp; Kabel Data
+                </span>
               </label>
-              <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-100/80 cursor-pointer transition">
-                <input type="checkbox" id="kitGsm" required class="rounded text-red-600 focus:ring-red-500 w-4 h-4">
-                <span class="text-xs font-semibold text-slate-700"><i class="fa-solid fa-sim-card text-slate-500 mr-1.5"></i>4. Nomor HP Kartu GSM TMS</span>
+              <label class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-100/80 cursor-pointer transition">
+                <input type="checkbox" id="kitGsm" required class="rounded text-red-600 focus:ring-red-500 w-4 h-4 shrink-0">
+                <span class="text-xs font-semibold text-slate-700 leading-snug">
+                  <i class="fa-solid fa-sim-card text-slate-500 mr-1.5"></i>4. Nomor HP Kartu GSM TMS
+                </span>
               </label>
             </div>
           </div>
@@ -363,20 +475,24 @@
           <!-- Digital Signature Box -->
           <div class="pt-4 border-t border-slate-100">
             <div class="flex items-center justify-between mb-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-slate-600">Tanda Tangan Digital Penerima (BAST) *</label>
-              <button type="button" onclick="clearSignature()" class="text-xs font-semibold text-slate-400 hover:text-red-500 transition cursor-pointer">
+              <label class="text-xs font-bold uppercase tracking-wider text-slate-600">
+                Tanda Tangan Digital Penerima (BAST) *
+              </label>
+              <button type="button" onclick="clearSignature()" class="text-xs font-semibold text-slate-400 hover:text-red-500 transition">
                 <i class="fa-solid fa-rotate-left mr-1"></i>Ulangi Tanda Tangan
               </button>
             </div>
             <div class="border border-slate-200 rounded-xl bg-slate-50 canvas-container overflow-hidden">
               <canvas id="signaturePad" class="w-full h-36 cursor-crosshair block bg-white"></canvas>
             </div>
-            <p class="text-[11px] text-slate-400 mt-1">Gunakan jari atau stylus yang baru diterima untuk menandatangani bukti serah terima di atas.</p>
+            <p class="text-[11px] text-slate-400 mt-1.5 leading-normal">
+              Gunakan jari atau stylus yang baru diterima untuk menandatangani bukti serah terima di atas.
+            </p>
           </div>
 
           <!-- Checkbox Pernyataan -->
-          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-3">
-            <input type="checkbox" id="agreementCheck" required class="mt-0.5 rounded text-red-600 focus:ring-red-500 h-4 w-4">
+          <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-3">
+            <input type="checkbox" id="agreementCheck" required class="mt-0.5 rounded text-red-600 focus:ring-red-500 h-4 w-4 shrink-0">
             <label for="agreementCheck" class="text-xs text-slate-600 leading-relaxed cursor-pointer select-none">
               Saya menyatakan telah hadir mengikuti <strong>Training Offline TMS Nasmoco</strong>, telah menerima paket lengkap (<strong>Tablet, Stylus, Charger, dan Nomor HP Kartu GSM TMS</strong>) untuk unit <strong>Toyota Hilux Rangga</strong> dalam keadaan baik, serta siap menjalankan aplikasi TMS sesuai SOP.
             </label>
@@ -384,70 +500,56 @@
 
           <!-- Action Buttons -->
           <div class="pt-2 flex flex-col sm:flex-row gap-3">
-            <button type="submit" id="submitBtn" class="flex-1 bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-bold py-3 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 transition cursor-pointer">
+            <button type="submit" id="submitBtn" class="flex-1 bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-bold py-3.5 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 transition">
               <i class="fa-solid fa-paper-plane"></i>
-              <span>Kirim Registrasi & BAST Instan</span>
+              <span>Kirim Registrasi &amp; BAST Instan</span>
             </button>
-            <button type="button" onclick="resetForm()" class="px-5 py-3 rounded-xl border border-slate-200 text-slate-600 font-semibold hover:bg-slate-100 text-sm transition cursor-pointer">
+            <button type="button" onclick="resetForm()" class="px-5 py-3.5 rounded-xl border border-slate-200 text-slate-600 font-semibold hover:bg-slate-100 text-sm transition">
               Reset
             </button>
           </div>
         </form>
       </div>
 
-      <!-- Right Column: Hardware Kit Info, QR Access & ITCare Helpdesk -->
+      <!-- Right Column: Hardware Kit Info & ITCare Helpdesk -->
       <div class="space-y-6">
-        <!-- Quick QR Card -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex items-center gap-4">
-          <img 
-            src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=4&data=https%3A%2F%2Fnasmocoafs.github.io%2FSosialisasiTMS%2F" 
-            alt="QR Code Sosialisasi TMS" 
-            class="w-20 h-20 rounded-xl border border-slate-200 p-1 shrink-0"
-          >
-          <div class="min-w-0 flex-1">
-            <span class="text-[10px] font-extrabold uppercase tracking-wider text-red-600 block">Akses Cepat QR</span>
-            <h4 class="text-xs font-bold text-slate-800 truncate">nasmocoafs.github.io/SosialisasiTMS/</h4>
-            <p class="text-[11px] text-slate-500 mt-0.5 mb-2">Klik tombol di bawah untuk menampilkan QR layar penuh.</p>
-            <button onclick="openBridgingScreen()" class="text-[11px] font-bold text-white bg-slate-900 hover:bg-slate-800 px-3 py-1.5 rounded-lg inline-flex items-center gap-1.5 transition cursor-pointer">
-              <i class="fa-solid fa-expand"></i> Perbesar QR
-            </button>
-          </div>
-        </div>
-
         <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white shadow-md">
           <div class="inline-flex items-center gap-2 bg-red-600/30 text-red-300 text-xs px-3 py-1 rounded-full font-semibold mb-3 border border-red-500/30">
-            <i class="fa-solid fa-boxes-stacked"></i> Paket BAST Hardware TMS
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <span>Paket BAST Hardware TMS</span>
           </div>
-          <h3 class="text-base font-bold mb-2">Standar Serah Terima Kit TA</h3>
-          <p class="text-xs text-slate-300 mb-4">Seluruh armada menggunakan <strong>Toyota Hilux Rangga</strong>. Pastikan setiap TA menerima 4 komponen utama berikut:</p>
+          <h3 class="text-base font-bold mb-2 leading-snug">Standar Serah Terima Kit TA</h3>
+          <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+            Seluruh armada menggunakan <strong>Toyota Hilux Rangga</strong>. Pastikan setiap TA menerima 4 komponen utama berikut:
+          </p>
 
           <ul class="text-xs space-y-3 text-slate-200">
-            <li class="flex items-center gap-2.5 bg-white/5 p-2.5 rounded-xl border border-white/10">
-              <i class="fa-solid fa-tablet-screen-button text-emerald-400 text-sm"></i>
+            <li class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10">
+              <i class="fa-solid fa-tablet-screen-button text-emerald-400 text-base w-5 text-center shrink-0"></i>
               <div>
-                <span class="font-bold block text-white">1. Tablet Operasional TMS</span>
+                <span class="font-bold block text-white leading-snug">1. Tablet Operasional TMS</span>
                 <span class="text-[11px] text-slate-300">Terinstal portal web/aplikasi <code>tms.nasmoco.net</code></span>
               </div>
             </li>
-            <li class="flex items-center gap-2.5 bg-white/5 p-2.5 rounded-xl border border-white/10">
-              <i class="fa-solid fa-pen-fancy text-emerald-400 text-sm"></i>
+            <li class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10">
+              <i class="fa-solid fa-pen-fancy text-emerald-400 text-base w-5 text-center shrink-0"></i>
               <div>
-                <span class="font-bold block text-white">2. Stylus Pen</span>
-                <span class="text-[11px] text-slate-300">Untuk kemudahan input WAC & tanda tangan pelanggan</span>
+                <span class="font-bold block text-white leading-snug">2. Stylus Pen</span>
+                <span class="text-[11px] text-slate-300">Untuk kemudahan input WAC &amp; tanda tangan pelanggan</span>
               </div>
             </li>
-            <li class="flex items-center gap-2.5 bg-white/5 p-2.5 rounded-xl border border-white/10">
-              <i class="fa-solid fa-charging-station text-emerald-400 text-sm"></i>
+            <li class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10">
+              <i class="fa-solid fa-charging-station text-emerald-400 text-base w-5 text-center shrink-0"></i>
               <div>
-                <span class="font-bold block text-white">3. Charger Original</span>
-                <span class="text-[11px] text-slate-300">Adaptor & kabel pengisi daya perangkat</span>
+                <span class="font-bold block text-white leading-snug">3. Charger Original</span>
+                <span class="text-[11px] text-slate-300">Adaptor &amp; kabel pengisi daya perangkat</span>
               </div>
             </li>
-            <li class="flex items-center gap-2.5 bg-white/5 p-2.5 rounded-xl border border-white/10">
-              <i class="fa-solid fa-sim-card text-emerald-400 text-sm"></i>
+            <li class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10">
+              <i class="fa-solid fa-sim-card text-emerald-400 text-base w-5 text-center shrink-0"></i>
               <div>
-                <span class="font-bold block text-white">4. Nomor HP Kartu GSM TMS</span>
-                <span class="text-[11px] text-slate-300">Kartu seluler khusus koneksi data & komunikasi TMS</span>
+                <span class="font-bold block text-white leading-snug">4. Nomor HP Kartu GSM TMS</span>
+                <span class="text-[11px] text-slate-300">Kartu seluler khusus koneksi data &amp; komunikasi TMS</span>
               </div>
             </li>
           </ul>
@@ -458,13 +560,15 @@
           <div class="flex items-center justify-between mb-3">
             <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
               <i class="fa-brands fa-whatsapp text-emerald-600 text-lg"></i>
-              Helpdesk ITCare Nasmoco
+              <span>Helpdesk ITCare Nasmoco</span>
             </h4>
-            <span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-50 text-emerald-700 rounded-md border border-emerald-200">Support Aktif</span>
+            <span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-50 text-emerald-700 rounded-md border border-emerald-200">
+              Support Aktif
+            </span>
           </div>
           
           <p class="text-xs text-slate-600 leading-relaxed mb-4">
-            Untuk registrasi perangkat/akses atau kendala teknis selama <em>training</em> & operasional, hubungi <strong>ITCare via WhatsApp</strong> lalu ketik/klik angka <strong><code>0</code></strong> untuk memulai registrasi:
+            Untuk registrasi perangkat/akses atau kendala teknis selama <em>training</em> &amp; operasional, hubungi <strong>ITCare via WhatsApp</strong> lalu ketik/klik angka <strong><code>0</code></strong> untuk memulai registrasi:
           </p>
 
           <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 mb-4 space-y-2 text-xs">
@@ -478,7 +582,7 @@
             </div>
           </div>
 
-          <a href="https://wa.me/6282133488787?text=0" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-sm flex items-center justify-center gap-2 transition">
+          <a href="https://wa.me/6282133488787?text=0" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-sm flex items-center justify-center gap-2 transition">
             <i class="fa-brands fa-whatsapp text-base"></i>
             <span>Chat WA ITCare (Otomatis Ketik "0")</span>
           </a>
@@ -494,7 +598,9 @@
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
             <p class="text-xs text-slate-500 font-medium">Total Master Peserta TA</p>
-            <p class="text-2xl font-extrabold text-slate-800">23 <span class="text-xs font-normal text-slate-500">Armada Hilux Rangga</span></p>
+            <p class="text-2xl font-extrabold text-slate-800 mt-0.5">
+              23 <span class="text-xs font-normal text-slate-500">Armada Hilux Rangga</span>
+            </p>
           </div>
           <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center">
             <i class="fa-solid fa-users"></i>
@@ -502,8 +608,10 @@
         </div>
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
-            <p class="text-xs text-slate-500 font-medium">Sudah Registrasi & BAST</p>
-            <p id="statRegistered" class="text-2xl font-extrabold text-emerald-600">0 <span class="text-xs font-normal text-slate-500">Peserta</span></p>
+            <p class="text-xs text-slate-500 font-medium">Sudah Registrasi &amp; BAST</p>
+            <p id="statRegistered" class="text-2xl font-extrabold text-emerald-600 mt-0.5">
+              0 <span class="text-xs font-normal text-slate-500">Peserta</span>
+            </p>
           </div>
           <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
             <i class="fa-solid fa-circle-check"></i>
@@ -512,7 +620,9 @@
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
             <p class="text-xs text-slate-500 font-medium">Belum Registrasi</p>
-            <p id="statPending" class="text-2xl font-extrabold text-amber-600">23 <span class="text-xs font-normal text-slate-500">Peserta</span></p>
+            <p id="statPending" class="text-2xl font-extrabold text-amber-600 mt-0.5">
+              23 <span class="text-xs font-normal text-slate-500">Peserta</span>
+            </p>
           </div>
           <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
             <i class="fa-solid fa-clock"></i>
@@ -521,19 +631,22 @@
       </div>
 
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        
         <!-- Table Toolbar -->
-        <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-50/50">
+        <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-50/50">
           <div>
-            <h3 class="font-bold text-slate-800 text-lg">Data Kehadiran & BAST Hardware Terdata</h3>
-            <p class="text-xs text-slate-500">Data tersimpan secara instan & otomatis tersinkronisasi ke Google Spreadsheet Nasmoco.</p>
+            <h3 class="font-bold text-slate-800 text-base sm:text-lg leading-snug">
+              Data Kehadiran &amp; BAST Hardware Terdata
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Data tersimpan secara instan &amp; otomatis tersinkronisasi ke Google Spreadsheet Nasmoco.
+            </p>
           </div>
           <div class="flex items-center gap-2 w-full sm:w-auto">
-            <button onclick="exportToCSV()" class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-1.5 transition shadow-sm cursor-pointer">
+            <button onclick="exportToCSV()" class="flex-1 sm:flex-none px-4 py-2.5 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-1.5 transition shadow-sm whitespace-nowrap">
               <i class="fa-solid fa-file-excel"></i>
               <span>Download Excel/CSV</span>
             </button>
-            <button onclick="openClearModal()" class="px-3 py-2 text-xs font-bold rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 transition cursor-pointer" title="Hapus Riwayat Lokal">
+            <button onclick="openClearModal()" class="px-3.5 py-2.5 text-xs font-bold rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 transition" title="Hapus Riwayat Lokal">
               <i class="fa-regular fa-trash-can"></i>
             </button>
           </div>
@@ -543,14 +656,14 @@
         <div class="overflow-x-auto custom-scrollbar">
           <table class="w-full text-left border-collapse text-xs">
             <thead>
-              <tr class="bg-slate-100 text-slate-700 border-b border-slate-200 uppercase font-semibold tracking-wider">
-                <th class="p-3.5">Waktu</th>
-                <th class="p-3.5">Cabang</th>
-                <th class="p-3.5">Nama TA & NIK</th>
-                <th class="p-3.5">Unit Hilux Rangga (No. Rangka & Mesin)</th>
-                <th class="p-3.5">No. GSM TMS</th>
-                <th class="p-3.5">Kelengkapan Kit</th>
-                <th class="p-3.5 text-center">TTD BAST</th>
+              <tr class="bg-slate-100 text-slate-700 border-b border-slate-200 uppercase font-bold tracking-wider">
+                <th class="p-3.5 whitespace-nowrap">Waktu</th>
+                <th class="p-3.5 whitespace-nowrap">Cabang</th>
+                <th class="p-3.5 whitespace-nowrap">Nama TA &amp; NIK</th>
+                <th class="p-3.5 whitespace-nowrap">Unit Hilux Rangga (No. Rangka &amp; Mesin)</th>
+                <th class="p-3.5 whitespace-nowrap">No. GSM TMS</th>
+                <th class="p-3.5 whitespace-nowrap">Kelengkapan Kit</th>
+                <th class="p-3.5 text-center whitespace-nowrap">TTD BAST</th>
               </tr>
             </thead>
             <tbody id="registrationTableBody" class="divide-y divide-slate-100 text-slate-600">
@@ -563,49 +676,59 @@
           <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
             <i class="fa-solid fa-inbox text-xl"></i>
           </div>
-          <p class="text-sm font-semibold text-slate-700">Belum Ada Peserta yang Submit BAST</p>
+          <p class="text-sm font-bold text-slate-700">Belum Ada Peserta yang Submit BAST</p>
           <p class="text-xs text-slate-400 mt-1">Pilih Cabang dan Nama TA pada tab Form Registrasi untuk memulai pencatatan.</p>
         </div>
-
       </div>
     </section>
 
   </main>
 
-  <!-- MODAL: Konfirmasi Hapus Data (Tanpa window.confirm) -->
+  <!-- MODAL: Konfirmasi Hapus Data -->
   <div id="clearConfirmModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 text-center">
       <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3">
         <i class="fa-solid fa-triangle-exclamation text-xl"></i>
       </div>
       <h3 class="text-base font-bold text-slate-800 mb-1">Hapus Riwayat Browser?</h3>
-      <p class="text-xs text-slate-500 mb-5">Tindakan ini hanya membersihkan tampilan tabel lokal di perangkat ini (data di Google Sheet tetap aman).</p>
+      <p class="text-xs text-slate-500 mb-5 leading-relaxed">
+        Tindakan ini hanya membersihkan tampilan tabel lokal di browser ini (data di Google Sheet tetap aman).
+      </p>
       <div class="flex gap-2 justify-center">
-        <button onclick="closeModal('clearConfirmModal')" class="px-4 py-2 text-xs font-semibold rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 cursor-pointer">Batal</button>
-        <button onclick="confirmClearAllData()" class="px-4 py-2 text-xs font-bold rounded-xl bg-rose-600 hover:bg-rose-700 text-white cursor-pointer">Ya, Bersihkan</button>
+        <button onclick="closeModal('clearConfirmModal')" class="px-4 py-2 text-xs font-semibold rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50">
+          Batal
+        </button>
+        <button onclick="confirmClearAllData()" class="px-4 py-2 text-xs font-bold rounded-xl bg-rose-600 hover:bg-rose-700 text-white">
+          Ya, Bersihkan
+        </button>
       </div>
     </div>
   </div>
 
   <!-- Notification Toast -->
-  <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 max-w-sm bg-slate-900 text-white p-4 rounded-xl shadow-xl flex items-center gap-3 border border-slate-700">
-    <div id="toastIcon" class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
+  <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 max-w-sm bg-slate-900 text-white p-4 rounded-xl shadow-xl flex items-center gap-3 border border-slate-700 pointer-events-none">
+    <div id="toastIcon" class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold shrink-0">
       <i class="fa-solid fa-check"></i>
     </div>
     <div class="flex-1">
       <p id="toastTitle" class="text-xs font-bold text-slate-100">Notifikasi</p>
-      <p id="toastMessage" class="text-[11px] text-slate-300">Pesan notifikasi berhasil dikirim.</p>
+      <p id="toastMessage" class="text-[11px] text-slate-300 leading-snug mt-0.5">Pesan notifikasi berhasil dikirim.</p>
     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="bg-white border-t border-slate-200 py-3 px-4 text-center text-xs text-slate-500">
-    <p>Aftersales Department • Marketing Division — PT New Ratna Motor (Nasmoco Group) &copy; 2026 | Helpdesk ITCare: <a href="https://wa.me/6282133488787?text=0" target="_blank" class="text-emerald-600 font-semibold hover:underline">+62 821-3348-8787 (Ketik 0)</a></p>
+  <footer class="bg-white border-t border-slate-200 py-3.5 px-4 text-center text-xs text-slate-500">
+    <p>
+      Aftersales Department • Marketing Division — PT New Ratna Motor (Nasmoco Group) &copy; 2026 | Helpdesk ITCare:
+      <a href="https://wa.me/6282133488787?text=0" target="_blank" rel="noopener noreferrer" class="text-emerald-600 font-semibold hover:underline">
+        +62 821-3348-8787 (Ketik 0)
+      </a>
+    </p>
   </footer>
 
   <script>
     // ============================================================================
-    // HARDCODED WEBHOOK URL GOOGLE SHEETS & PORTAL GITHUB PAGES
+    // HARDCODED GOOGLE APPS SCRIPT WEBHOOK & PORTAL URL
     // ============================================================================
     const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxJf3nK_snZzeq9N3btY1JVm873fL4fr9cYB2B5ZS1GL9iSVuTIH1-srktZe0oD0XWhzA/exec";
     const PORTAL_URL = "https://nasmocoafs.github.io/SosialisasiTMS/";
@@ -637,10 +760,7 @@
       { id: 23, cabang: "Nasmoco Cilacap", nama: "Haris Fajar Pamuji", noRangka: "MR3ACAEA7R0390082", mesin: "Diesel" }
     ];
 
-    // State Variables
     let registrations = [];
-
-    // Canvas Signature variables
     let canvas, ctx;
     let isDrawing = false;
     let hasSignature = false;
@@ -654,15 +774,15 @@
     };
 
     // Bridging Screen Controls
-    function closeBridgingScreen() {
-      const screen = document.getElementById('bridgingScreen');
-      screen.classList.add('hidden');
+    function enterMainApp() {
+      const portal = document.getElementById('bridgingPortal');
+      portal.classList.add('hidden');
       setTimeout(resizeCanvas, 60);
     }
 
-    function openBridgingScreen() {
-      const screen = document.getElementById('bridgingScreen');
-      screen.classList.remove('hidden');
+    function openBridgingPortal() {
+      const portal = document.getElementById('bridgingPortal');
+      portal.classList.remove('hidden');
     }
 
     function copyPortalLink() {
@@ -674,14 +794,14 @@
       textarea.select();
       try {
         document.execCommand('copy');
-        const btn = document.getElementById('btnCopyPortalLink');
-        btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i><span>Link Tersalin!</span>`;
+        const btn = document.getElementById('btnCopyPortal');
+        btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i><span>Link Berhasil Disalin!</span>`;
         setTimeout(() => {
           btn.innerHTML = `<i class="fa-regular fa-copy"></i><span>Salin Link Portal</span>`;
         }, 2000);
-        showToast('Link Tersalin', 'URL Portal Sosialisasi TMS berhasil disalin ke clipboard.', 'success');
+        showToast('Tersalin', 'Link portal Sosialisasi TMS berhasil disalin.', 'success');
       } catch (err) {
-        showToast('Info', 'Salin manual: ' + PORTAL_URL, 'info');
+        showToast('Info', 'Gunakan klik kanan pada tautan untuk menyalin.', 'info');
       }
       document.body.removeChild(textarea);
     }
@@ -719,10 +839,8 @@
     function handleCabangChange() {
       const selectedCabang = document.getElementById('cabangSelect').value;
       const filteredTAs = MASTER_DATA_TMS.filter(item => item.cabang === selectedCabang);
-      
       document.getElementById('noRangka').value = '';
       document.getElementById('tipeMesin').value = '';
-
       renderNamaOptions(filteredTAs, true);
     }
 
@@ -749,14 +867,14 @@
       if (tab === 'form') {
         formSection.classList.remove('hidden');
         listSection.classList.add('hidden');
-        tabFormBtn.className = 'tab-active pb-3 px-4 text-sm flex items-center gap-2 cursor-pointer';
-        tabListBtn.className = 'text-slate-500 pb-3 px-4 text-sm flex items-center gap-2 hover:text-slate-800 transition cursor-pointer';
+        tabFormBtn.className = 'tab-active pb-3 px-4 text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap';
+        tabListBtn.className = 'text-slate-500 pb-3 px-4 text-xs sm:text-sm flex items-center gap-2 hover:text-slate-800 transition whitespace-nowrap';
         setTimeout(resizeCanvas, 50);
       } else {
         formSection.classList.add('hidden');
         listSection.classList.remove('hidden');
-        tabListBtn.className = 'tab-active pb-3 px-4 text-sm flex items-center gap-2 cursor-pointer';
-        tabFormBtn.className = 'text-slate-500 pb-3 px-4 text-sm flex items-center gap-2 hover:text-slate-800 transition cursor-pointer';
+        tabListBtn.className = 'tab-active pb-3 px-4 text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap';
+        tabFormBtn.className = 'text-slate-500 pb-3 px-4 text-xs sm:text-sm flex items-center gap-2 hover:text-slate-800 transition whitespace-nowrap';
       }
     }
 
@@ -843,6 +961,7 @@
     }
 
     function clearSignature() {
+      if (!ctx || !canvas) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       hasSignature = false;
     }
@@ -891,15 +1010,15 @@
       resetForm();
       switchTab('list');
 
-      // 2. Non-blocking Background Sync ke Google Sheets (Hardcoded URL)
-      showToast('Tersimpan Instan!', `BAST ${personObj.nama} (${personObj.cabang}) tercatat & otomatis sinkron ke Google Sheet.`, 'success');
+      // 2. Non-blocking Background Sync ke Google Sheets Nasmoco
+      showToast('Tersimpan Instan!', `BAST ${personObj.nama} (${personObj.cabang}) tercatat & sinkron ke Google Sheet.`, 'success');
       fetch(WEBHOOK_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(newRegistration)
       }).catch(err => {
-        console.warn('Background sync warning:', err);
+        console.warn('Background sync info:', err);
       });
     }
 
@@ -944,12 +1063,12 @@
             <div class="font-mono font-bold text-slate-700 text-xs">${escapeHtml(item.noRangka)}</div>
             <div class="mt-0.5 flex items-center gap-1.5">
               <span class="text-[10px] font-semibold text-slate-500">Hilux Rangga</span>
-              <span class="px-1.5 py-0.2 rounded text-[10px] font-bold ${badgeColor}">${escapeHtml(item.tipeMesin)}</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${badgeColor}">${escapeHtml(item.tipeMesin)}</span>
             </div>
           </td>
-          <td class="p-3.5 font-mono font-semibold text-emerald-700">${escapeHtml(item.noGsmTms)}</td>
+          <td class="p-3.5 font-mono font-semibold text-emerald-700 whitespace-nowrap">${escapeHtml(item.noGsmTms)}</td>
           <td class="p-3.5">
-            <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+            <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 whitespace-nowrap">
               <i class="fa-solid fa-check-double"></i> Tablet, Stylus, Charger, GSM
             </span>
           </td>
@@ -1073,13 +1192,13 @@
       toastMessage.textContent = message;
 
       if (type === 'error') {
-        toastIcon.className = 'w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold';
+        toastIcon.className = 'w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold shrink-0';
         toastIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i>`;
       } else if (type === 'info') {
-        toastIcon.className = 'w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold';
+        toastIcon.className = 'w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold shrink-0';
         toastIcon.innerHTML = `<i class="fa-solid fa-info"></i>`;
       } else {
-        toastIcon.className = 'w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold';
+        toastIcon.className = 'w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold shrink-0';
         toastIcon.innerHTML = `<i class="fa-solid fa-check"></i>`;
       }
 
