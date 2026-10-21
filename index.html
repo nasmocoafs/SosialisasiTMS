@@ -60,6 +60,17 @@
       background: #CBD5E1;
       border-radius: 9999px;
     }
+    /* Prevent mobile browser jump-zoom on tap */
+    @media (max-width: 640px) {
+      input, select, textarea {
+        font-size: 16px !important;
+      }
+    }
+    .canvas-container canvas {
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
     @keyframes pulseGlow {
       0%, 100% { box-shadow: 0 0 0 0 rgba(225, 29, 36, 0.35); }
       50% { box-shadow: 0 0 28px 6px rgba(225, 29, 36, 0.2); }
@@ -102,27 +113,28 @@
     </div>
 
     <!-- Top Bar Bridging -->
-    <div class="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-10 pt-6 pb-4 flex items-center justify-between border-b border-slate-800/80">
-      <div class="flex items-center gap-3.5">
-        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-red-600 to-red-700 text-white flex items-center justify-center shadow-lg shadow-red-600/25 shrink-0">
-          <i class="fa-solid fa-truck-fast text-lg"></i>
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-8 lg:px-10 pt-5 sm:pt-6 pb-4 flex items-center justify-between border-b border-slate-800/80 gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-red-600 to-red-700 text-white flex items-center justify-center shadow-lg shadow-red-600/25 shrink-0">
+          <i class="fa-solid fa-truck-fast text-base sm:text-lg"></i>
         </div>
         <div>
-          <p class="text-[11px] font-bold tracking-[0.14em] uppercase text-red-400 leading-tight">
+          <p class="text-[10px] sm:text-[11px] font-bold tracking-[0.14em] uppercase text-red-400 leading-tight">
             AFTERSALES DEPARTMENT • MARKETING DIVISION
           </p>
-          <h1 class="text-base sm:text-xl font-extrabold tracking-tight text-white leading-snug mt-0.5">
+          <h1 class="text-sm sm:text-lg lg:text-xl font-extrabold tracking-tight text-white leading-snug mt-0.5">
             TOYOTA MOBILE SERVICE (TMS) — NASMOCO GROUP
           </h1>
         </div>
       </div>
 
       <div class="flex items-center gap-2.5 shrink-0">
-        <button onclick="window.print()" class="no-print inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold transition">
+        <button onclick="window.print()" class="no-print inline-flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold transition">
           <i class="fa-solid fa-print text-red-400"></i>
-          <span>Cetak Poster QR</span>
+          <span class="hidden sm:inline">Cetak Poster QR</span>
+          <span class="sm:hidden">Cetak</span>
         </button>
-        <div class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+        <div class="hidden md:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
           <span>Live System Connected</span>
         </div>
@@ -130,111 +142,123 @@
     </div>
 
     <!-- Main Center Content Bridging -->
-    <div class="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-10 py-6 my-auto">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-8 lg:px-10 py-6 my-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
         
         <!-- Left Column: Welcome & Action Steps (7 Cols) -->
-        <div class="lg:col-span-7 space-y-6 text-left">
+        <div class="lg:col-span-7 space-y-5 text-left">
+          
+          <!-- Mobile Friendly Banner (Jikalau TA sudah buka di HP/Tablet langsung) -->
+          <div class="lg:hidden p-3 rounded-2xl bg-red-500/15 border border-red-500/30 flex items-center justify-between gap-3 shadow-sm">
+            <div class="flex items-center gap-2.5 text-xs text-red-200">
+              <i class="fa-solid fa-mobile-screen-button text-red-400 text-base"></i>
+              <span>Buka form langsung di perangkat ini?</span>
+            </div>
+            <button onclick="enterMainApp()" class="px-3.5 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 active:scale-95 text-white font-bold text-xs shrink-0 shadow-sm transition">
+              Buka Form &rarr;
+            </button>
+          </div>
+
           <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-500/15 border border-red-500/30 text-red-300 text-xs font-bold tracking-wide uppercase">
             <i class="fa-solid fa-satellite-dish text-red-400"></i>
             <span>PORTAL SOSIALISASI, TRIAL &amp; BAST HARDWARE</span>
           </div>
 
-          <div class="space-y-3.5">
-            <h2 class="text-3xl sm:text-4xl lg:text-[40px] font-extrabold tracking-tight text-white leading-[1.22]">
+          <div class="space-y-3">
+            <h2 class="text-2xl sm:text-3xl lg:text-[38px] xl:text-[40px] font-extrabold tracking-tight text-white leading-tight sm:leading-[1.22]">
               Selamat Datang Peserta Sosialisasi <span class="text-red-500">TMS System Nasmoco</span>
             </h2>
-            <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl font-normal">
+            <p class="text-xs sm:text-sm lg:text-base text-slate-300 leading-relaxed max-w-2xl font-normal">
               Silakan pindai (<em>scan</em>) <strong>QR Code</strong> di samping menggunakan perangkat <strong>Tablet Operasional TMS</strong> atau Smartphone Anda untuk mengisi <strong>Daftar Hadir &amp; Berita Acara Serah Terima (BAST)</strong> unit Hardware TMS System.
             </p>
           </div>
 
-          <!-- 3 Steps Cards (Clean Alignment & Equal Height) -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1">
-            <div class="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-4 flex flex-col justify-between hover:border-slate-700 transition">
-              <div class="w-8 h-8 rounded-lg bg-red-500/15 border border-red-500/30 text-red-400 font-mono text-xs font-bold flex items-center justify-center mb-3">
+          <!-- 3 Steps Cards (Clean Alignment & Touch Responsive) -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+            <div class="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between hover:border-slate-700 transition">
+              <div class="w-7 h-7 rounded-lg bg-red-500/15 border border-red-500/30 text-red-400 font-mono text-xs font-bold flex items-center justify-center mb-2.5">
                 01
               </div>
               <div>
-                <h3 class="text-sm font-bold text-white leading-snug mb-1">Scan QR / Buka Link</h3>
-                <p class="text-xs text-slate-400 leading-relaxed">
+                <h3 class="text-xs sm:text-sm font-bold text-white leading-snug mb-1">Scan QR / Buka Link</h3>
+                <p class="text-[11px] sm:text-xs text-slate-400 leading-relaxed">
                   Akses portal melalui browser di Tablet TMS yang baru dibagikan.
                 </p>
               </div>
             </div>
 
-            <div class="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-4 flex flex-col justify-between hover:border-slate-700 transition">
-              <div class="w-8 h-8 rounded-lg bg-red-500/15 border border-red-500/30 text-red-400 font-mono text-xs font-bold flex items-center justify-center mb-3">
+            <div class="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between hover:border-slate-700 transition">
+              <div class="w-7 h-7 rounded-lg bg-red-500/15 border border-red-500/30 text-red-400 font-mono text-xs font-bold flex items-center justify-center mb-2.5">
                 02
               </div>
               <div>
-                <h3 class="text-sm font-bold text-white leading-snug mb-1">Pilih Cabang &amp; TA</h3>
-                <p class="text-xs text-slate-400 leading-relaxed">
+                <h3 class="text-xs sm:text-sm font-bold text-white leading-snug mb-1">Pilih Cabang &amp; TA</h3>
+                <p class="text-[11px] sm:text-xs text-slate-400 leading-relaxed">
                   Data No. Rangka &amp; Mesin Hilux Rangga akan terisi otomatis.
                 </p>
               </div>
             </div>
 
-            <div class="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-4 flex flex-col justify-between hover:border-slate-700 transition">
-              <div class="w-8 h-8 rounded-lg bg-red-500/15 border border-red-500/30 text-red-400 font-mono text-xs font-bold flex items-center justify-center mb-3">
+            <div class="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between hover:border-slate-700 transition">
+              <div class="w-7 h-7 rounded-lg bg-red-500/15 border border-red-500/30 text-red-400 font-mono text-xs font-bold flex items-center justify-center mb-2.5">
                 03
               </div>
               <div>
-                <h3 class="text-sm font-bold text-white leading-snug mb-1">Cek Kit &amp; TTD Digital</h3>
-                <p class="text-xs text-slate-400 leading-relaxed">
+                <h3 class="text-xs sm:text-sm font-bold text-white leading-snug mb-1">Cek Kit &amp; TTD Digital</h3>
+                <p class="text-[11px] sm:text-xs text-slate-400 leading-relaxed">
                   Verifikasi Tablet, Stylus, Charger, &amp; GSM lalu kirim BAST.
                 </p>
               </div>
             </div>
           </div>
 
-          <!-- CTA Buttons (No Awkward Text Wrapping) -->
-          <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
-            <button onclick="enterMainApp()" class="no-print btn-glow px-6 py-3.5 rounded-2xl bg-red-600 hover:bg-red-500 active:scale-[0.99] text-white font-bold text-sm flex items-center justify-center gap-3 shadow-lg transition whitespace-nowrap">
+          <!-- CTA Buttons (Fluid Flex Wrapping - Never Overlaps or Slides Under QR Card) -->
+          <div class="pt-2 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
+            <button onclick="enterMainApp()" class="no-print btn-glow flex-1 sm:flex-initial px-6 py-3.5 rounded-2xl bg-red-600 hover:bg-red-500 active:scale-[0.98] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-red-600/30 transition">
               <span>Buka Formulir Registrasi Sekarang</span>
               <i class="fa-solid fa-arrow-right"></i>
             </button>
 
-            <a href="https://wa.me/6282133488787?text=0" target="_blank" rel="noopener noreferrer" class="px-5 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-emerald-400 font-semibold text-xs sm:text-sm flex items-center justify-center gap-2.5 transition whitespace-nowrap">
-              <i class="fa-brands fa-whatsapp text-base"></i>
+            <a href="https://wa.me/6282133488787?text=0" target="_blank" rel="noopener noreferrer" class="flex-1 sm:flex-initial px-4 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-emerald-400 font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition text-center">
+              <i class="fa-brands fa-whatsapp text-base shrink-0"></i>
               <span>Helpdesk ITCare: +62 821-3348-8787 (Ketik 0)</span>
             </a>
           </div>
         </div>
 
-        <!-- Right Column: QR Card (5 Cols - Full URL Visible Without Scrollbar) -->
-        <div class="lg:col-span-5 flex justify-center lg:justify-end">
-          <div class="bg-white text-slate-900 rounded-3xl p-6 sm:p-7 shadow-2xl border-4 border-red-500/20 w-full max-w-[430px] text-center">
-            <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-red-50 text-red-600 text-[11px] font-extrabold uppercase tracking-wider mb-2">
+        <!-- Right Column: QR Card (Responsive Width, Zero Clipping, Clean Monospace) -->
+        <div class="lg:col-span-5 flex justify-center lg:justify-end w-full">
+          <div class="bg-white text-slate-900 rounded-3xl p-5 sm:p-7 shadow-2xl border-4 border-red-500/20 w-full max-w-[380px] lg:max-w-[400px] xl:max-w-[430px] text-center mx-auto lg:mr-0">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-red-600 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider mb-2">
               <i class="fa-solid fa-qrcode"></i>
               <span>SCAN UNTUK AKSES APLIKASI</span>
             </div>
             
-            <h3 class="text-sm font-extrabold text-slate-800 tracking-tight uppercase mb-4">
+            <h3 class="text-xs sm:text-sm font-extrabold text-slate-800 tracking-tight uppercase mb-3 sm:mb-4">
               PORTAL REGISTRASI &amp; BAST TMS
             </h3>
 
             <!-- QR Image Container -->
-            <div class="p-3.5 bg-white rounded-2xl border-2 border-dashed border-slate-200 inline-block mb-4">
+            <div class="p-3 bg-white rounded-2xl border-2 border-dashed border-slate-200 inline-block mb-3.5">
               <img 
                 src="https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=6&data=https%3A%2F%2Fnasmocoafs.github.io%2FSosialisasiTMS%2F" 
                 alt="QR Code Sosialisasi TMS Nasmoco" 
-                class="w-48 h-48 sm:w-56 sm:h-56 object-contain mx-auto rounded-lg"
+                class="w-44 h-44 sm:w-52 sm:h-52 object-contain mx-auto rounded-lg"
                 onerror="this.src='https://placehold.co/320x320/ffffff/0f172a?text=QR+TMS+Nasmoco'"
               >
             </div>
 
-            <!-- Direct URL Box (Full Visible Without Scrollbar or Clipping) -->
-            <div class="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-3 mb-3.5">
+            <!-- Direct URL Box (Word-Break Safe, 100% Visible On Any Device) -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 mb-3 text-center">
               <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
                 TAUTAN LANGSUNG (URL):
               </p>
-              <a href="https://nasmocoafs.github.io/SosialisasiTMS/" target="_blank" rel="noopener noreferrer" class="block font-mono text-[11px] sm:text-xs font-extrabold text-red-600 hover:underline tracking-tight whitespace-nowrap">
+              <a href="https://nasmocoafs.github.io/SosialisasiTMS/" target="_blank" rel="noopener noreferrer" class="block font-mono text-[11px] sm:text-xs font-bold text-red-600 hover:underline break-all leading-relaxed">
                 https://nasmocoafs.github.io/SosialisasiTMS/
               </a>
             </div>
 
-            <button onclick="copyPortalLink()" id="btnCopyPortal" class="no-print w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition">
+            <button onclick="copyPortalLink()" id="btnCopyPortal" class="no-print w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition active:scale-[0.98]">
               <i class="fa-regular fa-copy"></i>
               <span>Salin Link Portal</span>
             </button>
@@ -245,7 +269,7 @@
     </div>
 
     <!-- Bottom Footer Bridging -->
-    <div class="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-10 py-3.5 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2">
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-8 lg:px-10 py-3.5 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2 text-center sm:text-left">
       <span>PT New Ratna Motor (Nasmoco Group) • Standardisasi Operasional Toyota Hilux Rangga</span>
       <span class="font-mono text-[11px] text-slate-500">Auto-Sync Spreadsheet Active</span>
     </div>
@@ -883,50 +907,55 @@
       ctx = canvas.getContext('2d');
 
       resizeCanvas();
-      window.addEventListener('resize', resizeCanvas);
+      window.addEventListener('resize', handleCanvasWindowResize);
 
+      // Mouse events
       canvas.addEventListener('mousedown', startDrawing);
       canvas.addEventListener('mousemove', draw);
       canvas.addEventListener('mouseup', stopDrawing);
       canvas.addEventListener('mouseleave', stopDrawing);
 
-      canvas.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        const touch = e.touches[0];
-        const mouseEvent = new MouseEvent('mousedown', {
-          clientX: touch.clientX,
-          clientY: touch.clientY
-        });
-        canvas.dispatchEvent(mouseEvent);
-      }, { passive: false });
+      // Native High-Precision Touch events for HP & Tablet Stylus/Finger
+      canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+      canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+      canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+    }
 
-      canvas.addEventListener('touchmove', (e) => {
-        e.preventDefault();
-        const touch = e.touches[0];
-        const mouseEvent = new MouseEvent('mousemove', {
-          clientX: touch.clientX,
-          clientY: touch.clientY
-        });
-        canvas.dispatchEvent(mouseEvent);
-      }, { passive: false });
-
-      canvas.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        const mouseEvent = new MouseEvent('mouseup', {});
-        canvas.dispatchEvent(mouseEvent);
-      }, { passive: false });
+    let resizeTimer;
+    function handleCanvasWindowResize() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        resizeCanvas();
+      }, 100);
     }
 
     function resizeCanvas() {
       if (!canvas) return;
       const rect = canvas.getBoundingClientRect();
-      if (rect.width > 0) {
-        canvas.width = rect.width;
-        canvas.height = 144;
-        ctx.strokeStyle = '#0F172A';
-        ctx.lineWidth = 2.5;
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
+      if (rect.width <= 0) return;
+
+      // Preserve existing drawing when resizing or rotating tablet
+      let existingData = null;
+      if (hasSignature) {
+        existingData = canvas.toDataURL();
+      }
+
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = 144 * dpr;
+      ctx.scale(dpr, dpr);
+
+      ctx.strokeStyle = '#0F172A';
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      if (existingData) {
+        const img = new Image();
+        img.onload = function() {
+          ctx.drawImage(img, 0, 0, rect.width, 144);
+        };
+        img.src = existingData;
       }
     }
 
@@ -960,9 +989,39 @@
       }
     }
 
+    function handleTouchStart(e) {
+      e.preventDefault();
+      if (e.touches.length === 0) return;
+      isDrawing = true;
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+    }
+
+    function handleTouchMove(e) {
+      e.preventDefault();
+      if (!isDrawing || e.touches.length === 0) return;
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      hasSignature = true;
+    }
+
+    function handleTouchEnd(e) {
+      e.preventDefault();
+      stopDrawing();
+    }
+
     function clearSignature() {
       if (!ctx || !canvas) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, 144);
       hasSignature = false;
     }
 
