@@ -985,6 +985,13 @@
               <i class="fa-solid fa-table-list"></i>
               <span>Live Monitoring Google Spreadsheet</span>
             </div>
+            <h3 class="text-lg sm:text-xl font-extrabold text-white">
+              Kontrol Kehadiran &amp; BAST 23 Armada
+            </h3>
+            <p id="lastSyncLabel" class="text-xs text-slate-400">
+              Terhubung otomatis dengan Google Spreadsheet Nasmoco
+            </p>
+          </div>
           <div class="flex flex-wrap items-center gap-2">
             <button onclick="syncFromSpreadsheet(true)" id="btnRefreshSheet" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 transition cursor-pointer shrink-0">
               <i id="refreshIcon" class="fa-solid fa-arrows-rotate text-emerald-400"></i>
@@ -1926,7 +1933,76 @@
 
     function getCanvasCoordinates(e) {
       const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches && e.touches.length > 0 ? e.touches[0].clientY : e.clientY;
       return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+    }
+
+    function startDrawing(e) {
+      isDrawing = true;
+      markSignatureActive();
+      const pos = getCanvasCoordinates(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const pos = getCanvasCoordinates(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }
+
+    function stopDrawing() {
+      if (!isDrawing) return;
+      isDrawing = false;
+      ctx.closePath();
+    }
+
+    function handleTouchStart(e) {
+      if (e.target === canvas) {
+        e.preventDefault();
+        startDrawing(e);
+      }
+    }
+
+    function handleTouchMove(e) {
+      if (e.target === canvas && isDrawing) {
+        e.preventDefault();
+        draw(e);
+      }
+    }
+
+    function handleTouchEnd(e) {
+      if (e.target === canvas) {
+        e.preventDefault();
+        stopDrawing();
+      }
+    }
+
+    function clearSignature() {
+      if (!canvas || !ctx) return;
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width || canvas.width, rect.height || canvas.height);
+      hasSignature = false;
+      const placeholder = document.getElementById('signaturePlaceholder');
+      if (placeholder) placeholder.classList.remove('hidden');
+      const wrapper = document.getElementById('signatureWrapper');
+      if (wrapper) {
+        wrapper.classList.remove('border-emerald-500');
+        wrapper.classList.add('border-slate-300');
+      }
+      const sigLabel = document.getElementById('sigStatusLabel');
+      if (sigLabel) {
+        sigLabel.textContent = 'Status: Belum ditandatangani';
+        sigLabel.className = '';
+      }
+      updateFormProgress();
+    }
+
     // Kompresi tanda tangan menjadi ukuran mikro (< 2.500 karakter) agar tidak pernah ditolak oleh batas 50.000 karakter sel Google Sheets
     function getCompactSignatureForSheet() {
       const tempCanvas = document.createElement('canvas');
@@ -2663,37 +2739,6 @@
       doc.text('Halaman 1 / 1', 285, 201, { align: 'right' });
 
       doc.save('Rekap_BAST_TMS_Nasmoco_1Halaman.pdf');
-    }
-
-      const sigImg = document.getElementById('pdfSignatureImg');
-      if (item.signatureData) {
-        sigImg.src = item.signatureData;
-        sigImg.classList.remove('hidden');
-      } else {
-        sigImg.classList.add('hidden');
-      }
-
-      const safeBranch = item.cabang.replace(/[^a-zA-Z0-9]/g, '_');
-      const safeName = item.nama.replace(/[^a-zA-Z0-9]/g, '_');
-      const filename = `BAST_TMS_${safeBranch}_${safeName}.pdf`;
-
-      const element = document.getElementById('bastPdfDocument');
-      showToast('Membuat PDF BAST...', `Mengunduh dokumen ${filename}`, 'info');
-
-      if (typeof html2pdf !== 'undefined') {
-        const opt = {
-          margin: [10, 10, 10, 10],
-          filename: filename,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, logging: false },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().set(opt).from(element).save().then(() => {
-          showToast('PDF Berhasil Diunduh', `File ${filename} telah tersimpan.`, 'success');
-        });
-      } else {
-        showToast('Info', 'Pustaka PDF sedang dimuat, silakan coba sesaat lagi.', 'info');
-      }
     }
 
     function exportToCSV() {
