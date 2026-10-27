@@ -763,10 +763,10 @@
           <div>
             <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-[11px] font-extrabold uppercase tracking-wider mb-1.5">
               <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-              LIVE TELEMETRY HO • AUTO-SYNC SETIAP 3.5 DETIK
+              LIVE TELEMETRY HO • AUTO-SYNC SETIAP 3 DETIK
             </span>
             <h2 class="text-xl sm:text-3xl font-extrabold tracking-tight">KLASEMEN LIVE POST-TEST TMS NASMOCO</h2>
-            <p class="text-xs sm:text-sm text-slate-300">Pantauan serentak pergeseran posisi (▲/▼), progres soal, dan skor 23 Cabang Nasmoco Group</p>
+            <p class="text-xs sm:text-sm text-slate-300">Pantauan serentak pergeseran posisi (▲/▼), progres soal (0/10 – 10/10), dan skor 23 Cabang Nasmoco Group</p>
           </div>
           <button type="button" onclick="toggleHoFullscreen()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-extrabold text-white flex items-center gap-2 self-start cursor-pointer">
             <i class="fa-solid fa-expand"></i>
@@ -812,7 +812,7 @@
               Arena Post-Test <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-red-400 to-purple-300">TMS System Nasmoco</span>
             </h2>
             <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Jawab 10 soal evaluasi modul operasional TMS dengan cepat dan tepat! Gunakan <strong>3 Power-Up</strong>, raih <strong>Speed Bonus</strong> &amp; <strong>Streak Combo</strong>, dan pantau posisi cabang Anda di Layar Utama HO.
+              Jawab 10 soal evaluasi modul operasional TMS dengan cepat dan tepat! Gunakan <strong>3 Power-Up</strong>, raih <strong>Speed Bonus</strong> &amp; <strong>Streak Combo</strong>, dan pantau posisi cabang Anda secara langsung di Layar Utama HO.
             </p>
           </div>
 
@@ -868,9 +868,9 @@
             <div class="flex items-center justify-between mb-3">
               <h3 class="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-amber-300 flex items-center gap-2">
                 <i class="fa-solid fa-crown"></i>
-                <span>Papan Peringkat Live (Top Scorers TA)</span>
+                <span>Papan Peringkat Live (Top Scorers &amp; Progres TA)</span>
               </h3>
-              <span id="lobbyQuizCountBadge" class="text-xs font-mono font-bold text-purple-200">0 TA Selesai</span>
+              <span id="lobbyQuizCountBadge" class="text-xs font-mono font-bold text-purple-200">0 TA Aktif</span>
             </div>
             <div id="quizLobbyLeaderboard" class="space-y-2 max-h-52 overflow-y-auto custom-scrollbar pr-1">
               <!-- Populated via JS -->
@@ -1579,23 +1579,22 @@
           const parts = quizTagSource.split('|');
           const qScore = parseInt(parts[1] || '0', 10);
           const qAcc = parseInt(parts[2] || '0', 10);
-          const qProgress = parseInt(parts[3] || '10', 10);
+          const qProgress = parts[3] !== undefined ? parseInt(parts[3], 10) : 10;
           const qStreak = parseInt(parts[4] || '0', 10);
 
-          const prevQuiz = quizScores[noRangka];
-          if (!prevQuiz || qScore >= prevQuiz.score || qProgress >= (prevQuiz.progress || 0)) {
-            quizScores[noRangka] = {
-              score: qScore,
-              accuracy: qAcc,
-              correctCount: Math.round(qAcc / 10),
-              progress: qProgress,
-              bestStreak: qStreak,
-              nama: masterMatch ? masterMatch.nama : rawNama,
-              cabang: masterMatch ? masterMatch.cabang : (raw.cabang || '-'),
-              noRangka: noRangka,
-              timestamp: raw.timestamp || '-'
-            };
-          }
+          // Karena remoteRows dibaca berurutan dari baris atas (lama) ke baris paling bawah (terbaru),
+          // langsung timpa dengan baris terbaru agar progres Soal 0/10 -> 10/10 selalu ter-update live
+          quizScores[noRangka] = {
+            score: qScore,
+            accuracy: qAcc,
+            correctCount: Math.round((qAcc / 100) * (qProgress || 0)),
+            progress: qProgress,
+            bestStreak: qStreak,
+            nama: masterMatch ? masterMatch.nama : rawNama,
+            cabang: masterMatch ? masterMatch.cabang : (raw.cabang || '-'),
+            noRangka: noRangka,
+            timestamp: raw.timestamp || '-'
+          };
 
           // Jika baris ini murni kiriman telemetri kuis (ID diawali QUIZ-), jangan dihitung sebagai dokumen BAST
           if (String(raw.id || '').startsWith('QUIZ-')) {
@@ -1636,7 +1635,6 @@
         if (!existing) {
           bastMapByVin.set(noRangka, normalized);
         } else {
-          // Lebur baris duplikat (Misal: Baris 2 punya tanda tangan base64, Baris 3 punya "Terverifikasi")
           const bestSig = (normalized.signatureData && String(normalized.signatureData).startsWith('data:image'))
             ? normalized.signatureData
             : existing.signatureData;
@@ -1844,6 +1842,11 @@
       tabQuizBtn.className = inactiveClass;
       tabListBtn.className = inactiveClass;
 
+      if (hoPollingTimer) {
+        clearInterval(hoPollingTimer);
+        hoPollingTimer = null;
+      }
+
       if (tab === 'form') {
         formSection.classList.remove('hidden');
         tabFormBtn.className = activeClass;
@@ -1854,11 +1857,23 @@
         renderQuizLobbyLeaderboard();
         renderHoLiveProjector();
         syncFromSpreadsheet(false);
+
+        // Auto-sync setiap 3 detik baik saat di Lobby, di Arena Kuis, maupun di Layar Utama HO
+        hoPollingTimer = setInterval(() => {
+          syncFromSpreadsheet(false);
+          if (currentQuizPlayer && !document.getElementById('quizGameView').classList.contains('hidden')) {
+            const sortedNow = Object.values(quizScores).sort((a, b) => b.score - a.score || b.accuracy - a.accuracy);
+            const myLiveRank = sortedNow.findIndex(s => s.noRangka === currentQuizPlayer.noRangka) + 1;
+            const rankBadge = document.getElementById('hudLiveRankBadge');
+            if (rankBadge && myLiveRank > 0) rankBadge.textContent = `Posisi Live: #${myLiveRank} dari ${sortedNow.length}`;
+          }
+        }, 3000);
       } else {
         listSection.classList.remove('hidden');
         tabListBtn.className = activeClass;
         renderListViews();
         syncFromSpreadsheet(false);
+        hoPollingTimer = setInterval(() => syncFromSpreadsheet(false), 4000);
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -2140,8 +2155,9 @@
 
       const vinKey = record.vin || record.noRangka || '-';
       const qData = quizScores[vinKey];
+      const progVal = (qData && qData.progress !== undefined) ? qData.progress : 10;
       const quizTelemetryTag = qData
-        ? `QUIZ|${qData.score}|${qData.accuracy}|${qData.progress || 10}|${qData.bestStreak || 0}`
+        ? `QUIZ|${qData.score}|${qData.accuracy}|${progVal}|${qData.bestStreak || 0}`
         : (record.quizScore !== undefined ? `QUIZ|${record.quizScore}|${record.quizAccuracy || 0}|10|0` : '');
 
       const baseKit = (record.kelengkapan || record.kitSummary || 'Lengkap 4 Kit TMS').split('• QUIZ|')[0].trim();
@@ -2809,8 +2825,8 @@
 
     function saveToLocalStorage() {
       try {
-        localStorage.setItem('tms_registrations_v4', JSON.stringify(registrations));
-        localStorage.setItem('tms_quiz_scores_v4', JSON.stringify(quizScores));
+        localStorage.setItem('tms_registrations_v5', JSON.stringify(registrations));
+        localStorage.setItem('tms_quiz_scores_v5', JSON.stringify(quizScores));
       } catch (e) {
         console.warn("Storage warning:", e);
       }
@@ -2818,11 +2834,11 @@
 
     function loadStoredData() {
       try {
-        const data = localStorage.getItem('tms_registrations_v4');
+        const data = localStorage.getItem('tms_registrations_v5');
         if (data) {
           registrations = JSON.parse(data);
         }
-        const qData = localStorage.getItem('tms_quiz_scores_v4');
+        const qData = localStorage.getItem('tms_quiz_scores_v5');
         if (qData) {
           quizScores = JSON.parse(qData);
         }
@@ -2854,7 +2870,7 @@
         renderHoLiveProjector();
         syncFromSpreadsheet(false);
         if (!hoPollingTimer) {
-          hoPollingTimer = setInterval(() => syncFromSpreadsheet(false), 3500);
+          hoPollingTimer = setInterval(() => syncFromSpreadsheet(false), 3000);
         }
       } else {
         hoView.classList.add('hidden');
@@ -2863,11 +2879,7 @@
         resView.classList.add('hidden');
         btnPlayer.className = 'py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold bg-slate-900 text-white shadow-sm transition cursor-pointer';
         btnHo.className = 'py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold text-slate-600 hover:bg-slate-100 transition cursor-pointer';
-
-        if (hoPollingTimer) {
-          clearInterval(hoPollingTimer);
-          hoPollingTimer = null;
-        }
+        renderQuizLobbyLeaderboard();
       }
     }
 
@@ -2898,6 +2910,7 @@
             <p class="text-sm font-bold text-slate-300 mt-1">Menunggu Peserta...</p>
           </div>`;
         }
+        const progDisplay = p.progress !== undefined ? p.progress : 10;
         return `<div class="bg-gradient-to-br from-white/15 to-white/5 border border-white/20 rounded-2xl p-4 flex items-center justify-between gap-3">
           <div class="min-w-0">
             <span class="text-[11px] font-extrabold text-amber-300 block">${titles[i]}</span>
@@ -2906,13 +2919,13 @@
           </div>
           <div class="text-right shrink-0">
             <span class="font-mono text-lg font-extrabold text-emerald-400 block">${p.score.toLocaleString('id-ID')} pts</span>
-            <span class="text-[11px] font-bold text-amber-200">Akurasi ${p.accuracy}% (${p.progress || 10}/10)</span>
+            <span class="text-[11px] font-bold text-amber-200">Akurasi ${p.accuracy}% (${progDisplay}/10)</span>
           </div>
         </div>`;
       }).join('');
 
       if (sorted.length === 0) {
-        tableBody.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">Belum ada peserta yang memulai Post-Test.</div>`;
+        tableBody.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">Belum ada peserta yang memulai Post-Test. Begitu TA menekan tombol Mulai di HP/Tablet, progres akan langsung muncul di sini.</div>`;
         return;
       }
 
@@ -2926,7 +2939,10 @@
         if (diff > 0) deltaHtml = `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[11px] font-extrabold animate-bounce">▲ +${diff}</span>`;
         if (diff < 0) deltaHtml = `<span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 text-[11px] font-extrabold">▼ ${diff}</span>`;
 
-        const progPct = Math.min(100, Math.round(((item.progress || 10) / 10) * 100));
+        const progNum = item.progress !== undefined ? item.progress : 10;
+        const progPct = Math.max(5, Math.min(100, Math.round((progNum / 10) * 100)));
+        const statusText = progNum === 0 ? 'Baru Mulai (Soal 1)' : (progNum >= 10 ? 'Selesai 10/10 ✓' : `Soal ${progNum}/10`);
+
         return `<div class="px-4 py-3 flex items-center justify-between gap-3 hover:bg-white/5 transition">
           <div class="flex items-center gap-3 min-w-0">
             <span class="w-8 h-8 rounded-xl bg-white/10 font-mono text-xs font-extrabold flex items-center justify-center shrink-0">#${rank}</span>
@@ -2936,17 +2952,54 @@
                 <span class="px-2 py-0.5 rounded bg-red-500/20 text-red-300 text-[10px] font-extrabold">${escapeHtml(item.cabang.replace('Nasmoco ', ''))}</span>
                 ${deltaHtml}
               </div>
-              <div class="w-40 sm:w-56 h-1.5 bg-slate-800 rounded-full overflow-hidden mt-1.5">
+              <div class="w-40 sm:w-56 h-2 bg-slate-800 rounded-full overflow-hidden mt-1.5">
                 <div class="h-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-all duration-500" style="width: ${progPct}%"></div>
               </div>
             </div>
           </div>
           <div class="text-right shrink-0">
             <span class="font-mono text-sm sm:text-base font-extrabold text-amber-300 block">${item.score.toLocaleString('id-ID')} pts</span>
-            <span class="text-[11px] text-slate-300">Akurasi ${item.accuracy}% • Soal ${item.progress || 10}/10</span>
+            <span class="text-[11px] text-slate-300">Akurasi ${item.accuracy}% • ${statusText}</span>
           </div>
         </div>`;
       }).join('');
+    }
+
+    // Fungsi pengiriman progres kuis per soal secara real-time ke Google Spreadsheet
+    async function pushLiveQuizProgress(progressStep) {
+      if (!currentQuizPlayer) return;
+      const runningAcc = progressStep > 0 ? Math.round((correctCount / progressStep) * 100) : 0;
+      const nowTime = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      quizScores[currentQuizPlayer.noRangka] = {
+        score: currentQuizScore,
+        accuracy: runningAcc,
+        correctCount: correctCount,
+        progress: progressStep,
+        bestStreak: bestStreak,
+        nama: currentQuizPlayer.nama,
+        cabang: currentQuizPlayer.cabang,
+        noRangka: currentQuizPlayer.noRangka,
+        timestamp: nowTime
+      };
+
+      saveToLocalStorage();
+      renderQuizLobbyLeaderboard();
+      renderHoLiveProjector();
+
+      await sendToSpreadsheet({
+        id: 'QUIZ-' + Date.now().toString().slice(-6),
+        timestamp: nowTime,
+        cabang: currentQuizPlayer.cabang,
+        nama: currentQuizPlayer.nama,
+        noRangka: currentQuizPlayer.noRangka,
+        vin: currentQuizPlayer.noRangka,
+        tipeMesin: currentQuizPlayer.mesin,
+        quizScore: currentQuizScore,
+        quizAccuracy: runningAcc
+      });
+
+      setTimeout(() => syncFromSpreadsheet(false), 700);
     }
 
     function playQuizTone(type) {
@@ -3064,6 +3117,9 @@
 
       playQuizTone('tick');
       renderActiveQuizQuestion();
+
+      // Langsung kirim status "Baru Mulai (Soal 0/10)" ke Spreadsheet agar langsung muncul di Laptop HO!
+      pushLiveQuizProgress(0);
     }
 
     function activatePowerUp(type) {
@@ -3238,26 +3294,13 @@
       document.getElementById('hudScoreText').textContent = currentQuizScore.toLocaleString('id-ID');
       updateStreakHud();
 
-      // Perbarui Posisi Live Peserta Saat Ini & Kirim Telemetri Latar Belakang
-      const runningAcc = Math.round((correctCount / (currentQuestionIdx + 1)) * 100);
-      quizScores[currentQuizPlayer.noRangka] = {
-        score: currentQuizScore,
-        accuracy: runningAcc,
-        correctCount: correctCount,
-        progress: currentQuestionIdx + 1,
-        bestStreak: bestStreak,
-        nama: currentQuizPlayer.nama,
-        cabang: currentQuizPlayer.cabang,
-        noRangka: currentQuizPlayer.noRangka,
-        timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
-      };
-      saveToLocalStorage();
-      renderHoLiveProjector();
+      // Langsung kirim progres soal ini (1/10 s/d 10/10) ke Google Spreadsheet secara real-time!
+      pushLiveQuizProgress(currentQuestionIdx + 1);
 
       const sortedNow = Object.values(quizScores).sort((a, b) => b.score - a.score || b.accuracy - a.accuracy);
       const myLiveRank = sortedNow.findIndex(s => s.noRangka === currentQuizPlayer.noRangka) + 1;
       const rankBadge = document.getElementById('hudLiveRankBadge');
-      if (rankBadge) rankBadge.textContent = `Posisi Live: #${myLiveRank} dari ${sortedNow.length}`;
+      if (rankBadge && myLiveRank > 0) rankBadge.textContent = `Posisi Live: #${myLiveRank} dari ${sortedNow.length}`;
 
       currentQuizAnswers.push({
         questionId: qObj.id,
@@ -3411,13 +3454,13 @@
       const countBadge = document.getElementById('lobbyQuizCountBadge');
       if (!container) return;
 
-      const entries = Object.values(quizScores).sort((a, b) => b.score - a.score);
-      if (countBadge) countBadge.textContent = `${entries.length}/23 TA Selesai`;
+      const entries = Object.values(quizScores).sort((a, b) => b.score - a.score || b.accuracy - a.accuracy);
+      if (countBadge) countBadge.textContent = `${entries.length}/23 TA Aktif`;
 
       if (entries.length === 0) {
         container.innerHTML = `
           <div class="text-center py-4 text-xs text-slate-400">
-            Belum ada peserta yang menyelesaikan Post-Test. Jadilah peringkat pertama!
+            Belum ada peserta yang memulai Post-Test. Jadilah peringkat pertama!
           </div>
         `;
         return;
@@ -3425,13 +3468,15 @@
 
       container.innerHTML = entries.map((item, idx) => {
         const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`;
+        const progNum = item.progress !== undefined ? item.progress : 10;
+        const progBadge = progNum < 10 ? `Soal ${progNum}/10` : `Selesai ✓`;
         return `
           <div class="flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs">
             <div class="flex items-center gap-2.5 min-w-0">
               <span class="font-mono font-extrabold text-sm w-6 text-center text-amber-300">${medal}</span>
               <div class="min-w-0">
                 <p class="font-extrabold text-white truncate">${escapeHtml(item.nama)}</p>
-                <p class="text-[11px] text-slate-400 truncate">${escapeHtml(item.cabang)}</p>
+                <p class="text-[11px] text-slate-400 truncate">${escapeHtml(item.cabang)} • <span class="text-purple-300 font-bold">${progBadge}</span></p>
               </div>
             </div>
             <div class="text-right shrink-0">
